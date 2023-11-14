@@ -22,6 +22,7 @@ android {
 
     buildTypes {
         release {
+//            shrinkResources = true
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -60,6 +61,9 @@ dependencies {
 
     // Material Icons
     implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
+    // Fluent Icon
+//    implementation("com.microsoft.design:fluent-system-icons:1.1.222")
 
 
     // Default

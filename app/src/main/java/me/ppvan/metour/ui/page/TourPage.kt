@@ -37,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import me.ppvan.metour.MeTourTopBar
 import me.ppvan.metour.R
 import me.ppvan.metour.data.Tour
 import java.time.format.DateTimeFormatter
@@ -51,6 +52,7 @@ fun TourPage() {
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        MeTourTopBar()
         Spacer(modifier = Modifier.height(20.dp))
         TourList(tours = List(10) { Tour.DEFAULT })
     }

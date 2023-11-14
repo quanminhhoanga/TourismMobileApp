@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -69,46 +69,41 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MeTourApp() {
     var selectedPage by remember {
-        mutableStateOf(TourPages.Tour)
+        mutableStateOf(TourPages.Profile)
     }
 
 
 
     Scaffold(
-        topBar = {
-            MeTourTopBar()
-        },
         bottomBar = {
             MeTourNavigationBar(
                 selectedPage = selectedPage,
                 onPageSelected = { selectedPage = it })
-        }
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { padding ->
-
-        Column(
-            modifier = Modifier.padding(padding)
-        ) {
-            AnimatedContent(
-                targetState = selectedPage,
-                label = "page-navigation",
-                transitionSpec = {
-                    SlideTransition.slideUp.enterTransition()
-                        .togetherWith(SlideTransition.slideDown.exitTransition())
-                }
-
-            )
-            { page ->
-                when (page) {
-                    TourPages.Home -> HomePage()
-                    TourPages.Tour -> TourPage()
-                    TourPages.Profile -> ProfilePage()
-
-                    else -> {
-                        Text(text = "UnImplemented")
-                    }
-                }
-
+        AnimatedContent(
+            targetState = selectedPage,
+            label = "page-navigation",
+            modifier = Modifier
+                .fillMaxSize(),
+            transitionSpec = {
+                SlideTransition.slideUp.enterTransition()
+                    .togetherWith(SlideTransition.slideDown.exitTransition())
             }
+
+        )
+        { page ->
+            when (page) {
+                TourPages.Home -> HomePage()
+                TourPages.Tour -> TourPage()
+                TourPages.Profile -> ProfilePage()
+
+                else -> {
+                    Text(text = "UnImplemented")
+                }
+            }
+
         }
     }
 }

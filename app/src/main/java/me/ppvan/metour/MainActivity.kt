@@ -130,6 +130,10 @@ fun MeTourTopBar() {
     ) {
         SearchBar(
             modifier = Modifier.fillMaxWidth(),
+//            colors = SearchBarDefaults.colors(
+//                containerColor = Color.Transparent,
+//                inputFieldColors = inputFieldColors()
+//            ),
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Search,

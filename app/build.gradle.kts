@@ -59,7 +59,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Material Icons
-    runtimeOnly("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
 
 
     // Default

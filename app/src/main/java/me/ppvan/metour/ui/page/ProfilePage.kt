@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import me.ppvan.metour.R
 import me.ppvan.metour.ui.component.rememberImeState
@@ -71,16 +73,28 @@ fun ProfilePage() {
             }
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.6f)
-                .aspectRatio(1f)
-                .clip(CircleShape)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier.matchParentSize(),
-                painter = painterResource(id = R.drawable.bocchi),
-                contentDescription = null
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.6f)
+                    .aspectRatio(1f)
+                    .clip(CircleShape)
+            ) {
+                Image(
+                    modifier = Modifier.matchParentSize(),
+                    painter = painterResource(id = R.drawable.bocchi),
+                    contentDescription = null
+                )
+            }
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = "@ppvan",
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
 
@@ -94,26 +108,20 @@ fun ProfilePage() {
         ) {
             OutlinedTextField(
                 modifier = formGroup,
-                value = "",
+                value = "Phạm Văn Phúc",
                 onValueChange = {},
                 label = { Text(text = "Họ và tên") },
                 colors = OutlinedTextFieldDefaults.colors()
             )
             OutlinedTextField(
                 modifier = formGroup,
-                value = "",
+                value = "phuclinux123@gmail.com",
                 onValueChange = {},
                 label = { Text(text = "Email") },
             )
             OutlinedTextField(
                 modifier = formGroup,
-                value = "",
-                onValueChange = {},
-                label = { Text(text = "Số điện thoại") },
-            )
-            OutlinedTextField(
-                modifier = formGroup,
-                value = "",
+                value = "0981234567",
                 onValueChange = {},
                 label = { Text(text = "Số điện thoại") },
             )

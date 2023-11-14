@@ -63,7 +63,7 @@ fun TourList(tours: List<Tour>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(horizontal = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
 
     ) {

@@ -53,9 +53,10 @@ dependencies {
 
     // Navigation compose
     val navVersion = "2.7.5"
-
     implementation("androidx.navigation:navigation-compose:$navVersion")
 
+    // ImageLoader
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
     // Material Icons
     runtimeOnly("androidx.compose.material:material-icons-extended:1.5.4")

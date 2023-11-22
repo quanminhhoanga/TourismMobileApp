@@ -1,5 +1,6 @@
 package me.ppvan.metour.ui.page
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,17 +18,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Place
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,12 +43,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import me.ppvan.metour.MeTourTopBar
 import me.ppvan.metour.R
 import me.ppvan.metour.data.FakeTourismDataSource
 import me.ppvan.metour.data.Tourism
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TourPage() {
 
@@ -59,12 +62,49 @@ fun TourPage() {
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MeTourTopBar() {
+    var query by remember {
+        mutableStateOf("")
+    }
+
+    var active by remember {
+        mutableStateOf(false)
+    }
+
+    SearchBar(
+        modifier = Modifier,
+//            colors = SearchBarDefaults.colors(
+//                containerColor = Color.Transparent,
+//                inputFieldColors = inputFieldColors()
+//            ),
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = "Search"
+            )
+        },
+        placeholder = { Text(text = "Find a tour") },
+        shape = RoundedCornerShape(12.dp),
+        query = query,
+        onQueryChange = { query = it },
+        onSearch = { Log.i("INFO", it) },
+        active = active,
+        onActiveChange = { active = it })
+    {
+
+    }
+}
+
+
 @Composable
 fun TourList(tours: List<Tourism>) {
     LazyColumn(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
 
     ) {

@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MeTourApp() {
     var selectedPage by remember {
-        mutableStateOf(TourPages.Tour)
+        mutableStateOf(TourPages.Profile)
     }
 
 

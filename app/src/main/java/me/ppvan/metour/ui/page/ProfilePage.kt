@@ -1,7 +1,12 @@
 package me.ppvan.metour.ui.page
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +18,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,8 +38,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import me.ppvan.metour.R
 import me.ppvan.metour.ui.component.rememberImeState
@@ -38,6 +49,12 @@ import me.ppvan.metour.ui.component.rememberImeState
 @Composable
 fun ProfilePage() {
 
+    val photoPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+
+        }
+    )
 
     val formGroup = Modifier
         .fillMaxWidth()
@@ -51,7 +68,6 @@ fun ProfilePage() {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
         }
     }
-
 
 
     Column(
@@ -79,15 +95,39 @@ fun ProfilePage() {
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f)
+                    .fillMaxWidth(0.4f)
                     .aspectRatio(1f)
-                    .clip(CircleShape)
+                    .clickable {
+                        photoPicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
             ) {
                 Image(
-                    modifier = Modifier.matchParentSize(),
+                    modifier = Modifier
+                        .matchParentSize()
+                        .clip(CircleShape),
                     painter = painterResource(id = R.drawable.bocchi),
                     contentDescription = null
                 )
+                Box(
+                    modifier = Modifier
+                        .matchParentSize()
+                        .background(Color.Transparent), contentAlignment = Alignment.BottomEnd
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xff2980b9)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CameraAlt,
+                            contentDescription = "Change Profile"
+                        )
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(6.dp))
@@ -97,6 +137,8 @@ fun ProfilePage() {
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Column(
             modifier = Modifier
@@ -118,13 +160,24 @@ fun ProfilePage() {
                 value = "phuclinux123@gmail.com",
                 onValueChange = {},
                 label = { Text(text = "Email") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
             OutlinedTextField(
                 modifier = formGroup,
                 value = "0981234567",
                 onValueChange = {},
                 label = { Text(text = "Số điện thoại") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
             )
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+            ) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(text = "Cập nhật Profile")
+            }
         }
     }
 }

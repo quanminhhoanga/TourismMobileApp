@@ -20,7 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Place
-import androidx.compose.material3.Card
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -76,7 +76,7 @@ fun TourList(tours: List<Tour>) {
 @Composable
 fun TourCard(tour: Tour) {
 
-    Card(
+    ElevatedCard(
 //        colors = CardDefaults.cardColors(
 //            containerColor = MaterialTheme.colorScheme.surface,
 //        ),
@@ -100,8 +100,8 @@ fun TourCard(tour: Tour) {
             Spacer(modifier = Modifier.width(12.dp))
 
             Surface(
-                contentColor = MaterialTheme.colorScheme.onBackground,
-                color = Color.Transparent
+//                contentColor = MaterialTheme.colorScheme.onBackground,
+//                color = Color.Transparent
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(text = tour.title, style = MaterialTheme.typography.titleLarge)

@@ -17,8 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,12 +35,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import me.ppvan.metour.MeTourTopBar
 import me.ppvan.metour.R
-import me.ppvan.metour.data.Tour
-import java.time.format.DateTimeFormatter
+import me.ppvan.metour.data.FakeTourismDataSource
+import me.ppvan.metour.data.Tourism
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,12 +55,12 @@ fun TourPage() {
     ) {
         MeTourTopBar()
         Spacer(modifier = Modifier.height(20.dp))
-        TourList(tours = List(10) { Tour.DEFAULT })
+        TourList(tours = FakeTourismDataSource.dummyTourism)
     }
 }
 
 @Composable
-fun TourList(tours: List<Tour>) {
+fun TourList(tours: List<Tourism>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,7 +75,7 @@ fun TourList(tours: List<Tour>) {
 }
 
 @Composable
-fun TourCard(tour: Tour) {
+fun TourCard(tour: Tourism) {
 
     ElevatedCard(
 //        colors = CardDefaults.cardColors(
@@ -91,7 +92,7 @@ fun TourCard(tour: Tour) {
                     .fillMaxHeight()
                     .aspectRatio(3 / 4f)
                     .clip(RoundedCornerShape(12.dp)),
-                model = tour.imageURL,
+                model = tour.picture,
                 placeholder = painterResource(id = R.drawable.hoalo),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
@@ -103,8 +104,8 @@ fun TourCard(tour: Tour) {
 //                contentColor = MaterialTheme.colorScheme.onBackground,
 //                color = Color.Transparent
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(text = tour.title, style = MaterialTheme.typography.titleLarge)
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text(text = tour.name, style = MaterialTheme.typography.titleLarge)
 
 
                     Column {
@@ -116,37 +117,30 @@ fun TourCard(tour: Tour) {
                                 tint = Color(0xff898282)
                             )
                             Text(
-                                text = tour.place,
+                                text = tour.location,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = Color(0xff898282)
                             )
                         }
-
+                        Spacer(modifier = Modifier.height(4.dp))
+                      
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 modifier = Modifier.size(16.dp),
-                                imageVector = Icons.Outlined.DateRange,
+                                imageVector = Icons.Outlined.Info,
                                 contentDescription = "DateRange",
                                 tint = Color(0xff898282)
                             )
                             Text(
-                                text = tour.beginTime.format(DateTimeFormatter.ISO_DATE_TIME),
+                                text = tour.description,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = Color(0xff898282)
+                                color = Color(0xff898282),
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1
                             )
                         }
                     }
                 }
-            }
-
-            IconButton(
-                modifier = Modifier.fillMaxHeight(),
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowRight,
-                    contentDescription = "KeyboardArrowRight"
-                )
             }
         }
     }

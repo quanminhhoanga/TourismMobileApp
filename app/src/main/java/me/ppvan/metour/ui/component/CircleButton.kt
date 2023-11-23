@@ -4,12 +4,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import me.ppvan.metour.ui.utils.noRippleClickable
 
@@ -17,19 +16,18 @@ import me.ppvan.metour.ui.utils.noRippleClickable
 fun CircleButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    icon: Int,
-    iconDescription: Int
+    icon: ImageVector
 ) {
     Surface(
         shape = CircleShape,
-        color = Color.Red,
+        color = MaterialTheme.colorScheme.secondary,
         modifier = Modifier
             .size(42.dp)
             .noRippleClickable { onClick() },
     ) {
         Image(
-            painter = painterResource(id = icon),
-            contentDescription = stringResource(id = iconDescription),
+            imageVector = icon,
+            contentDescription = null,
             modifier = modifier.padding(all = 10.dp)
         )
     }

@@ -3,42 +3,27 @@ package me.ppvan.metour
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Place
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
-import me.ppvan.metour.ui.page.HomePage
-import me.ppvan.metour.ui.page.ProfilePage
-import me.ppvan.metour.ui.page.TourPage
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import me.ppvan.metour.ui.theme.MeTourTheme
-import me.ppvan.moon.utils.SlideTransition
+import me.ppvan.metour.ui.view.HomeView
+import me.ppvan.metour.ui.view.TourDetailsView
+import me.ppvan.metour.ui.view.TourPages
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,78 +50,23 @@ fun MeTourApp() {
     var selectedPage by remember {
         mutableStateOf(TourPages.Profile)
     }
+    val navigator = rememberNavController()
 
-
-
-    Scaffold(
-        bottomBar = {
-            MeTourNavigationBar(
-                selectedPage = selectedPage,
-                onPageSelected = { selectedPage = it })
-        },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
-    ) { padding ->
-        AnimatedContent(
-            targetState = selectedPage,
-            label = "page-navigation",
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .consumeWindowInsets(padding)
-                .systemBarsPadding(),
-            transitionSpec = {
-                SlideTransition.slideUp.enterTransition()
-                    .togetherWith(SlideTransition.slideDown.exitTransition())
+    NavHost(navController = navigator, startDestination = "tour/0") {
+        composable(route = "home") {
+            HomeView(selectedPage = selectedPage, onPageSelected = { selectedPage = it })
+        }
+        composable(
+            route = "tour/{id}",
+            arguments = listOf(navArgument("id") { NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id", 1)!!
+            TourDetailsView(id = id) {
+                navigator.navigateUp()
             }
-
-        )
-        { page ->
-            when (page) {
-                TourPages.Home -> HomePage()
-                TourPages.Tour -> TourPage()
-                TourPages.Profile -> ProfilePage()
-
-                else -> {
-                    Text(text = "UnImplemented")
-                }
-            }
-
         }
     }
-}
 
-@Composable
-fun MeTourNavigationBar(
-    selectedPage: TourPages,
-    onPageSelected: (TourPages) -> Unit
-
-) {
-
-    NavigationBar {
-        TourPages.values().forEach { page ->
-            NavigationBarItem(
-                selected = selectedPage == page,
-                onClick = { onPageSelected(page) },
-                label = { Text(text = page.name) },
-                icon = {
-                    if (selectedPage == page) {
-                        Icon(imageVector = page.selectedIcon(), contentDescription = page.name)
-                    } else {
-                        Icon(imageVector = page.icon(), contentDescription = page.name)
-                    }
-                }
-            )
-        }
-    }
-}
-
-enum class TourPages constructor(
-    val icon: @Composable () -> ImageVector,
-    val selectedIcon: @Composable () -> ImageVector
-) {
-    Home(icon = { Icons.Outlined.Home }, selectedIcon = { Icons.Filled.Home }),
-    Tour(icon = { Icons.Outlined.Place }, selectedIcon = { Icons.Filled.Place }),
-    Profile(icon = { Icons.Outlined.Person }, selectedIcon = { Icons.Filled.Person })
 }
 
 @Preview(showBackground = true)

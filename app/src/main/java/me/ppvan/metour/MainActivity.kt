@@ -22,6 +22,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import me.ppvan.metour.ui.theme.MeTourTheme
 import me.ppvan.metour.ui.view.HomeView
+import me.ppvan.metour.ui.view.LoginView
+import me.ppvan.metour.ui.view.RegisterView
 import me.ppvan.metour.ui.view.TourDetailsView
 import me.ppvan.metour.ui.view.TourPages
 
@@ -52,12 +54,12 @@ fun MeTourApp() {
     }
     val navigator = rememberNavController()
 
-    NavHost(navController = navigator, startDestination = "tour/0") {
-        composable(route = "home") {
+    NavHost(navController = navigator, startDestination = Routes.Login.name) {
+        composable(route = Routes.Home.name) {
             HomeView(selectedPage = selectedPage, onPageSelected = { selectedPage = it })
         }
         composable(
-            route = "tour/{id}",
+            route = "${Routes.Tour.name}/{id}",
             arguments = listOf(navArgument("id") { NavType.IntType })
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id", 1)!!
@@ -65,8 +67,20 @@ fun MeTourApp() {
                 navigator.navigateUp()
             }
         }
+        composable(route = Routes.Register.name) {
+            RegisterView()
+        }
+
+        composable(route = Routes.Login.name) {
+            LoginView()
+        }
+
     }
 
+}
+
+enum class Routes {
+    Home, Tour, Register, Login
 }
 
 @Preview(showBackground = true)

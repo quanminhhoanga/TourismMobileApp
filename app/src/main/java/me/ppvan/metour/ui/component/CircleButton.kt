@@ -27,7 +27,7 @@ fun CircleButton(
     ) {
         Image(
             imageVector = icon,
-            contentDescription = null,
+            contentDescription = "Default",
             modifier = modifier.padding(all = 10.dp)
         )
     }

@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,6 +27,8 @@ import me.ppvan.metour.ui.view.LoginView
 import me.ppvan.metour.ui.view.RegisterView
 import me.ppvan.metour.ui.view.TourDetailsView
 import me.ppvan.metour.ui.view.TourPages
+import me.ppvan.metour.viewmodel.HomeViewModel
+import me.ppvan.metour.viewmodel.viewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +37,12 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MeTourTheme {
+
+                val homeViewModel = viewModel<HomeViewModel>(
+                    factory = viewModelFactory {
+                        HomeViewModel(MeTourApplication.appModule.tourRepo)
+                    }
+                )
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -54,7 +63,7 @@ fun MeTourApp() {
     }
     val navigator = rememberNavController()
 
-    NavHost(navController = navigator, startDestination = Routes.Login.name) {
+    NavHost(navController = navigator, startDestination = Routes.Home.name) {
         composable(route = Routes.Home.name) {
             HomeView(selectedPage = selectedPage, onPageSelected = { selectedPage = it })
         }

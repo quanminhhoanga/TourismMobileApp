@@ -40,8 +40,4 @@ class HomeViewModel(
             println("Data already loaded")
         }
     }
-
-    fun navigateToDetails(id: Int) {
-
-    }
 }

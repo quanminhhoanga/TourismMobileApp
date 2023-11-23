@@ -70,8 +70,8 @@ import me.ppvan.metour.ui.component.rememberImeState
 
 @Composable
 fun ProfilePage() {
-//    ProfileViewPage()
-    ProfileEditPage()
+    ProfileViewPage()
+//    ProfileEditPage()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

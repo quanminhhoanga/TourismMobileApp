@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Place
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
 import me.ppvan.metour.MeTourApplication
 import me.ppvan.metour.ui.page.HomePage
+import me.ppvan.metour.ui.page.LibraryPage
 import me.ppvan.metour.ui.page.ProfilePage
 import me.ppvan.metour.ui.page.TourPage
 import me.ppvan.metour.viewmodel.HomeViewModel
@@ -74,6 +77,7 @@ fun HomeView(navigateToDetails: (Int) -> Unit) {
                 TourPages.Home -> HomePage(homeViewModel, navigateToDetails)
                 TourPages.Tour -> TourPage()
                 TourPages.Profile -> ProfilePage()
+                TourPages.Library -> LibraryPage()
 
                 else -> {
                     Text(text = "UnImplemented")
@@ -115,5 +119,6 @@ enum class TourPages constructor(
 ) {
     Home(icon = { Icons.Outlined.Home }, selectedIcon = { Icons.Filled.Home }),
     Tour(icon = { Icons.Outlined.Place }, selectedIcon = { Icons.Filled.Place }),
+    Library(icon = { Icons.Outlined.BookmarkBorder }, selectedIcon = { Icons.Filled.Bookmark }),
     Profile(icon = { Icons.Outlined.Person }, selectedIcon = { Icons.Filled.Person })
 }

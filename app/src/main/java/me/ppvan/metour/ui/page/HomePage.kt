@@ -32,16 +32,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.ppvan.metour.R
-import me.ppvan.metour.data.FakeTourismDataSource
 import me.ppvan.metour.data.Tourism
 import me.ppvan.metour.ui.component.PopularPlaceCard
 import me.ppvan.metour.ui.component.RecommendationCard
 import me.ppvan.metour.ui.theme.MeTourTheme
 import me.ppvan.metour.ui.utils.noRippleClickable
+import me.ppvan.metour.viewmodel.HomeStates
+import me.ppvan.metour.viewmodel.HomeViewModel
 
 @Composable
-fun HomePage() {
-    val list = FakeTourismDataSource.dummyTourism
+fun HomePage(viewModel: HomeViewModel, navigateToDetail: (Int) -> Unit) {
 
     Column(
         modifier = Modifier
@@ -50,25 +50,39 @@ fun HomePage() {
             .verticalScroll(rememberScrollState())
     ) {
         HomeHeader(navigateToAboutMe = {})
-        HomeContent(
-            tourismList = list,
-            modifier = Modifier,
-            navigateToDetail = {},
-        )
+        when (viewModel.state.value) {
+            HomeStates.Loading -> {
+                Text(text = "Loadding")
+            }
+
+            HomeStates.Done -> {
+                HomeContent(
+                    populars = viewModel.populars,
+                    recommendations = viewModel.recommendations,
+                    modifier = Modifier,
+                    navigateToDetail = navigateToDetail,
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun HomeContent(tourismList: List<Tourism>, modifier: Modifier, navigateToDetail: (Int) -> Unit) {
+fun HomeContent(
+    populars: List<Tourism>,
+    recommendations: List<Tourism>,
+    modifier: Modifier,
+    navigateToDetail: (Int) -> Unit
+) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         contentPadding = PaddingValues(horizontal = 24.dp),
         content = {
-            items(tourismList.size) { index ->
+            items(populars.size) { index ->
                 PopularPlaceCard(
-                    tourism = tourismList[index],
+                    tourism = populars[index],
                     modifier = modifier,
-                    onClickCard = { navigateToDetail(tourismList[index].id) }
+                    onClickCard = { navigateToDetail(populars[index].id) }
                 )
             }
         })
@@ -90,11 +104,11 @@ fun HomeContent(tourismList: List<Tourism>, modifier: Modifier, navigateToDetail
                     // Implement callbacks here
                 }),
         content = {
-            items(tourismList.size) { index ->
+            items(recommendations.size) { index ->
                 RecommendationCard(
                     modifier = modifier,
-                    tourism = tourismList[index],
-                    onClickCard = { navigateToDetail(tourismList[index].id) }
+                    tourism = recommendations[index],
+                    onClickCard = { navigateToDetail(recommendations[index].id) }
                 )
             }
         })

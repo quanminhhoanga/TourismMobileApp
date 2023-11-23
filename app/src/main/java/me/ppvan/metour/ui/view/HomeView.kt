@@ -20,21 +20,37 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.viewmodel.compose.viewModel
+import me.ppvan.metour.MeTourApplication
 import me.ppvan.metour.ui.page.HomePage
 import me.ppvan.metour.ui.page.ProfilePage
 import me.ppvan.metour.ui.page.TourPage
+import me.ppvan.metour.viewmodel.HomeViewModel
+import me.ppvan.metour.viewmodel.viewModelFactory
 import me.ppvan.moon.utils.SlideTransition
 
 
 @Composable
-fun HomeView(selectedPage: TourPages, onPageSelected: (TourPages) -> Unit) {
+fun HomeView(navigateToDetails: (Int) -> Unit) {
+
+    var selectedPage by remember {
+        mutableStateOf(TourPages.Home)
+    }
+    val homeViewModel = viewModel<HomeViewModel>(factory = viewModelFactory {
+        HomeViewModel(MeTourApplication.appModule.tourRepo)
+    })
+
     Scaffold(
         bottomBar = {
             MeTourNavigationBar(
                 selectedPage = selectedPage,
-                onPageSelected = onPageSelected
+                onPageSelected = { selectedPage = it }
             )
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
@@ -55,7 +71,7 @@ fun HomeView(selectedPage: TourPages, onPageSelected: (TourPages) -> Unit) {
         )
         { page ->
             when (page) {
-                TourPages.Home -> HomePage()
+                TourPages.Home -> HomePage(homeViewModel, navigateToDetails)
                 TourPages.Tour -> TourPage()
                 TourPages.Profile -> ProfilePage()
 

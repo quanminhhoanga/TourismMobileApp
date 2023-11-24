@@ -14,4 +14,12 @@ class RoomTourismRepository : TourismRepository {
         delay(1000)
         return FakeTourismDataSource.dummyTourism
     }
+
+    override suspend fun findTourByName(name: String): List<Tourism> {
+        delay(1000)
+        if (name.isBlank()) {
+            return emptyList()
+        }
+        return FakeTourismDataSource.dummyTourism.filter { tour -> tour.name.contains(name) }
+    }
 }

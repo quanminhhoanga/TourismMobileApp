@@ -1,7 +1,7 @@
 package me.ppvan.metour.ui.page
 
-import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,15 +24,13 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,11 +42,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import me.ppvan.metour.R
-import me.ppvan.metour.data.FakeTourismDataSource
 import me.ppvan.metour.data.Tourism
+import me.ppvan.metour.viewmodel.TourViewModel
 
 @Composable
-fun TourPage() {
+fun TourPage(viewModel: TourViewModel, navigateToDetails: (Int) -> Unit) {
+
+    val query by viewModel.query
+    val active by viewModel.active
+    val suggestions = viewModel.suggestions.toList()
+    val results = viewModel.results.toList()
 
     Column(
         modifier = Modifier
@@ -56,30 +59,32 @@ fun TourPage() {
             .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MeTourTopBar()
+        MeTourTopBar(
+            query,
+            active,
+            suggestions,
+            viewModel::onSuggesting,
+            viewModel::onSearchTour,
+            viewModel::onActiveChange
+        )
         Spacer(modifier = Modifier.height(20.dp))
-        TourList(tours = FakeTourismDataSource.dummyTourism)
+        TourList(tours = viewModel.results, onItemClick = navigateToDetails)
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MeTourTopBar() {
-    var query by remember {
-        mutableStateOf("")
-    }
-
-    var active by remember {
-        mutableStateOf(false)
-    }
-
+fun MeTourTopBar(
+    query: String,
+    active: Boolean,
+    suggestions: List<Tourism>,
+    onQueryChange: (String) -> Unit,
+    onSearch: (String) -> Unit,
+    onActiveChange: (Boolean) -> Unit
+) {
     SearchBar(
         modifier = Modifier,
-//            colors = SearchBarDefaults.colors(
-//                containerColor = Color.Transparent,
-//                inputFieldColors = inputFieldColors()
-//            ),
         leadingIcon = {
             Icon(
                 imageVector = Icons.Outlined.Search,
@@ -89,18 +94,32 @@ fun MeTourTopBar() {
         placeholder = { Text(text = "Find a tour") },
         shape = RoundedCornerShape(12.dp),
         query = query,
-        onQueryChange = { query = it },
-        onSearch = { Log.i("INFO", it) },
+        onQueryChange = onQueryChange,
+        onSearch = onSearch,
         active = active,
-        onActiveChange = { active = it })
+        onActiveChange = onActiveChange
+    )
     {
-
+        LazyColumn() {
+            items(suggestions) { tour ->
+                ListItem(
+                    modifier = Modifier.clickable { onSearch(tour.name) },
+                    headlineContent = { Text(text = tour.name) },
+                    leadingContent = {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = "Search Icon"
+                        )
+                    }
+                )
+            }
+        }
     }
 }
 
 
 @Composable
-fun TourList(tours: List<Tourism>) {
+fun TourList(tours: List<Tourism>, onItemClick: (Int) -> Unit) {
     LazyColumn(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -109,13 +128,13 @@ fun TourList(tours: List<Tourism>) {
 
     ) {
         items(tours) { tour ->
-            TourCard(tour)
+            TourCard(tour, onItemClick)
         }
     }
 }
 
 @Composable
-fun TourCard(tour: Tourism) {
+fun TourCard(tour: Tourism, onClick: (Int) -> Unit) {
 
     ElevatedCard(
 //        colors = CardDefaults.cardColors(
@@ -125,6 +144,7 @@ fun TourCard(tour: Tourism) {
             .fillMaxWidth()
             .aspectRatio(2.5f)
             .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
+            .clickable { onClick(tour.id) }
     ) {
         Row(modifier = Modifier.padding(12.dp)) {
             AsyncImage(
@@ -163,7 +183,7 @@ fun TourCard(tour: Tourism) {
                             )
                         }
                         Spacer(modifier = Modifier.height(4.dp))
-                      
+
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 modifier = Modifier.size(16.dp),

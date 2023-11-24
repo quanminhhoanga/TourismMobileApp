@@ -23,7 +23,7 @@ fun LibraryPage() {
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            TourList(tours = recommendations)
+            TourList(tours = recommendations, {})
         }
     }
 }

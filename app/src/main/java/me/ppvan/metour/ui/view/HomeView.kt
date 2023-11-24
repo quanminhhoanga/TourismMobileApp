@@ -35,6 +35,7 @@ import me.ppvan.metour.ui.page.LibraryPage
 import me.ppvan.metour.ui.page.ProfilePage
 import me.ppvan.metour.ui.page.TourPage
 import me.ppvan.metour.viewmodel.HomeViewModel
+import me.ppvan.metour.viewmodel.TourViewModel
 import me.ppvan.metour.viewmodel.viewModelFactory
 import me.ppvan.moon.utils.SlideTransition
 
@@ -43,10 +44,13 @@ import me.ppvan.moon.utils.SlideTransition
 fun HomeView(navigateToDetails: (Int) -> Unit) {
 
     var selectedPage by remember {
-        mutableStateOf(TourPages.Home)
+        mutableStateOf(TourPages.Tour)
     }
     val homeViewModel = viewModel<HomeViewModel>(factory = viewModelFactory {
         HomeViewModel(MeTourApplication.appModule.tourRepo)
+    })
+    val tourViewModel = viewModel<TourViewModel>(factory = viewModelFactory {
+        TourViewModel(MeTourApplication.appModule.tourRepo)
     })
 
     Scaffold(
@@ -75,7 +79,7 @@ fun HomeView(navigateToDetails: (Int) -> Unit) {
         { page ->
             when (page) {
                 TourPages.Home -> HomePage(homeViewModel, navigateToDetails)
-                TourPages.Tour -> TourPage()
+                TourPages.Tour -> TourPage(tourViewModel, navigateToDetails)
                 TourPages.Profile -> ProfilePage()
                 TourPages.Library -> LibraryPage()
 

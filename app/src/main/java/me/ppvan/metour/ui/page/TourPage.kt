@@ -68,7 +68,7 @@ fun TourPage(viewModel: TourViewModel, navigateToDetails: (Int) -> Unit) {
             viewModel::onActiveChange
         )
         Spacer(modifier = Modifier.height(20.dp))
-        TourList(tours = viewModel.results, onItemClick = navigateToDetails)
+        TourList(tours = results, onItemClick = navigateToDetails)
     }
 }
 

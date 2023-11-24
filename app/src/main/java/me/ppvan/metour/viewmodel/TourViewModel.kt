@@ -45,9 +45,19 @@ class TourViewModel(private val tourismRepository: TourismRepository) : ViewMode
     }
 
     fun onSearchTour(query: String) {
-        Log.d("INFO", query)
 
         this.active.value = false
+        this.query.value = query
+        this.results.clear()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val newSuggestions = tourismRepository.findTourByName(query)
+            Log.d(
+                "TourViewModel",
+                "query = ${query}, search: ${newSuggestions.joinToString { it.name }}"
+            )
+            this@TourViewModel.results.addAll(newSuggestions)
+        }
     }
 
 

@@ -24,6 +24,11 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,41 +39,55 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import me.ppvan.metour.data.FakeTourismDataSource
+import androidx.lifecycle.viewmodel.compose.viewModel
+import me.ppvan.metour.MeTourApplication
 import me.ppvan.metour.data.Schedule
 import me.ppvan.metour.data.Tourism
 import me.ppvan.metour.ui.component.BottomRoundedShape
 import me.ppvan.metour.ui.component.CircleButton
 import me.ppvan.metour.ui.component.ScheduleCard
+import me.ppvan.metour.viewmodel.TourDetailsViewModel
+import me.ppvan.metour.viewmodel.viewModelFactory
 
 @Composable
-fun TourDetailsView(id: Int, modifier: Modifier = Modifier, onBackPress: () -> Unit) {
-    val tourism = FakeTourismDataSource.dummyTourism[0]
+fun TourDetailsView(id: Int, onBackPress: () -> Unit) {
+
+    val viewModel = viewModel<TourDetailsViewModel>(factory = viewModelFactory {
+        TourDetailsViewModel(MeTourApplication.appModule.tourRepo)
+    })
+    var tourism by remember {
+        mutableStateOf(Tourism.default())
+    }
+    val isFavorite by viewModel.favorite
+
+    LaunchedEffect(key1 = id) {
+        tourism = viewModel.getDetailById(id)
+    }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         DetailHeader(
-            modifier = modifier,
+            modifier = Modifier,
             navigateBack = onBackPress,
             tourism = tourism,
-            isFavorite = true,
+            isFavorite = isFavorite,
             favoriteClick = {
-
+                viewModel.updateFavoriteTourism(id)
             }
         )
-        DetailContent(modifier = modifier, tourism = tourism)
+        DetailContent(modifier = Modifier, tourism = tourism)
         DetailBookingNow(
-            modifier = modifier,
+            modifier = Modifier,
             listSchedule = tourism.schedule,
-            listSelectedSchedule = listOf(1, 2),
+            listSelectedSchedule = viewModel.listSelectedSchedule,
             onClickCard = {
-//                viewModel.updateScheduleTourism(it)
+                viewModel.updateScheduleTourism(it)
             }
         )
-        DetailPriceAndContinue(modifier = modifier, onClickButton = {
+        DetailPriceAndContinue(modifier = Modifier, onClickButton = {
 //            viewModel.dialogState = true
         })
     }
@@ -196,7 +215,7 @@ fun DetailPriceAndContinue(modifier: Modifier, onClickButton: () -> Unit) {
                 .align(Alignment.CenterVertically)
         ) {
             Text(
-                text = "Continue",
+                text = "Đăng ký",
 //                color = WhiteColor, fontFamily = poppinsFamily,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp,

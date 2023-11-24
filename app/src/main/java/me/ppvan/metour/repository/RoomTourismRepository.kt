@@ -22,4 +22,14 @@ class RoomTourismRepository : TourismRepository {
         }
         return FakeTourismDataSource.dummyTourism.filter { tour -> tour.name.contains(name) }
     }
+
+    override suspend fun updateFavoriteTourism(id: Int) {
+        val tourism = findTourismById(id)
+        tourism.isFavorite = !tourism.isFavorite
+    }
+
+    override suspend fun findTourismById(id: Int): Tourism {
+        return FakeTourismDataSource.dummyTourism.find { tourism -> tourism.id == id }
+            ?: Tourism.default()
+    }
 }

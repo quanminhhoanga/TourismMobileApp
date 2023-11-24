@@ -1,5 +1,7 @@
 package me.ppvan.metour.data
 
+import me.ppvan.metour.R
+
 data class Tourism(
     val id: Int,
     val name: String,
@@ -9,8 +11,26 @@ data class Tourism(
     val ticketPrice: String,
     val picture: Int,
     val schedule: List<Schedule>,
-    val isFavorite: Boolean
-)
+    var isFavorite: Boolean
+) {
+    companion object {
+        // Default Tourism object with some default values
+        fun default(): Tourism {
+            return Tourism(
+                id = 0,
+                name = "Default Name",
+                location = "Default Location",
+                rate = "Default Rate",
+                description = "Default Description",
+                ticketPrice = "Default Ticket Price",
+                picture = R.drawable.hoalo, // Assuming you have a default picture resource
+                schedule = emptyList(),
+                isFavorite = false
+            )
+        }
+    }
+}
+
 
 data class Schedule(
     val id: Int,

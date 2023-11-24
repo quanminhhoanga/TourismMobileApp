@@ -44,16 +44,22 @@ fun MeTourApp() {
 
     val navigator = rememberNavController()
 
-    NavHost(navController = navigator, startDestination = Routes.Home.name) {
+    NavHost(navController = navigator, startDestination = "${Routes.Tour.name}/${1}") {
         composable(route = Routes.Home.name) {
             HomeView(navigateToDetails = { id -> navigator.navigate("${Routes.Tour.name}/${id}") })
         }
         composable(
             route = "${Routes.Tour.name}/{id}"
         ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("id", "1")!!
+            val id = backStackEntry.arguments.let {
+                if (it == null) {
+                    "1"
+                } else {
+                    it.getString("id", "1")
+                }
+            }
             TourDetailsView(id = id.toInt()) {
-                navigator.navigateUp()
+                navigator.popBackStack()
             }
         }
         composable(route = Routes.Register.name) {

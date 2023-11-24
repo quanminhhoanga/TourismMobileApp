@@ -1,6 +1,7 @@
 package me.ppvan.metour.ui.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,14 +31,14 @@ fun ScheduleCard(
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(22.dp))
-//            .background(WhiteColor)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
             .width(80.dp)
             .height(100.dp)
             .clickable { onCardClick(schedule) }
     ) {
         Surface(
             shape = RoundedCornerShape(bottomStart = 10.dp, topEnd = 22.dp),
-//            color = if (isSelected) BlueColor else WhiteColor,
+            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
             modifier = Modifier
                 .width(27.dp)
                 .height(25.dp)

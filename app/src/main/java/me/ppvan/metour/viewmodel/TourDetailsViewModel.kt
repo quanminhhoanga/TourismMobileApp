@@ -13,7 +13,8 @@ import me.ppvan.metour.repository.TourismRepository
 
 class TourDetailsViewModel constructor(private val repository: TourismRepository) : ViewModel() {
     val favorite = mutableStateOf(false)
-//    val dialogState = mutableStateOf(false)
+    val subcribed = mutableStateOf(false)
+    val dialogVisible = mutableStateOf(false)
 
     private val _listSelectedSchedule = mutableStateListOf<Int>()
     val listSelectedSchedule: List<Int> get() = _listSelectedSchedule
@@ -40,6 +41,11 @@ class TourDetailsViewModel constructor(private val repository: TourismRepository
             val result = repository.findTourismById(id)
             favorite.value = result.isFavorite
         }
+    }
+
+    fun updateSubscribedState() {
+        dialogVisible.value = false
+        subcribed.value = !subcribed.value
     }
 
     suspend fun getDetailById(id: Int): Tourism {

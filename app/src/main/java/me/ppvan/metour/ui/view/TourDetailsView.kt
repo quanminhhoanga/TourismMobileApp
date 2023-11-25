@@ -2,6 +2,7 @@ package me.ppvan.metour.ui.view
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,9 +21,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,7 +66,11 @@ fun TourDetailsView(id: Int, onBackPress: () -> Unit) {
     var tourism by remember {
         mutableStateOf(Tourism.default())
     }
+    var dialogVisible by remember {
+        mutableStateOf(false)
+    }
     val isFavorite by viewModel.favorite
+    val subscribed by viewModel.subcribed
 
     LaunchedEffect(key1 = id) {
         tourism = viewModel.getDetailById(id)
@@ -87,10 +99,21 @@ fun TourDetailsView(id: Int, onBackPress: () -> Unit) {
                 viewModel.updateScheduleTourism(it)
             }
         )
-        DetailPriceAndContinue(modifier = Modifier, onClickButton = {
-//            viewModel.dialogState = true
-        })
+        DetailPriceAndContinue(modifier = Modifier, subscribed = subscribed) {
+            dialogVisible = true
+        }
     }
+
+    if (dialogVisible) {
+        ConfirmAlertDialog(
+            onDismissRequest = { dialogVisible = false },
+            onConfirmation = { dialogVisible = false; viewModel.updateSubscribedState() },
+            dialogTitle = "Xác nhận",
+            dialogText = "Bạn chắc chắn muốn đăng ký tour?",
+            icon = Icons.Filled.Info
+        )
+    }
+
 }
 
 
@@ -184,7 +207,7 @@ fun DetailBookingNow(
 }
 
 @Composable
-fun DetailPriceAndContinue(modifier: Modifier, onClickButton: () -> Unit) {
+fun DetailPriceAndContinue(modifier: Modifier, subscribed: Boolean, onClickButton: () -> Unit) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -206,20 +229,39 @@ fun DetailPriceAndContinue(modifier: Modifier, onClickButton: () -> Unit) {
                 fontSize = 12.sp,
             )
         }
-        Button(
-            onClick = onClickButton,
-            shape = RoundedCornerShape(22.dp),
-            modifier = modifier
-                .fillMaxWidth()
-                .height(60.dp)
-                .align(Alignment.CenterVertically)
-        ) {
-            Text(
-                text = "Đăng ký",
-//                color = WhiteColor, fontFamily = poppinsFamily,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp,
-            )
+        if (subscribed) {
+            Button(
+                onClick = onClickButton,
+                shape = RoundedCornerShape(22.dp),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .align(Alignment.CenterVertically),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
+            ) {
+                Text(
+                    text = "Hủy Đăng ký",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp,
+                )
+            }
+        } else {
+            Button(
+                onClick = onClickButton,
+                shape = RoundedCornerShape(22.dp),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .align(Alignment.CenterVertically)
+                    .clip(RoundedCornerShape(22.dp))
+                    .background(MaterialTheme.colorScheme.primary)
+            ) {
+                Text(
+                    text = "Đăng ký",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp,
+                )
+            }
         }
     }
 }
@@ -258,6 +300,48 @@ fun DetailHeader(
             )
         }
     }
+}
+
+@Composable
+fun ConfirmAlertDialog(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    dialogTitle: String,
+    dialogText: String,
+    icon: ImageVector,
+) {
+    AlertDialog(
+        icon = {
+            Icon(icon, contentDescription = "Example Icon")
+        },
+        title = {
+            Text(text = dialogTitle)
+        },
+        text = {
+            Text(text = dialogText)
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                }
+            ) {
+                Text("OK")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text("Hủy")
+            }
+        }
+    )
 }
 
 @Preview

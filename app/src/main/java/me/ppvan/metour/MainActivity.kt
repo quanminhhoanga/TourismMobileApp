@@ -44,7 +44,7 @@ fun MeTourApp() {
 
     val navigator = rememberNavController()
 
-    NavHost(navController = navigator, startDestination = "${Routes.Tour.name}/${1}") {
+    NavHost(navController = navigator, startDestination = Routes.Home.name) {
         composable(route = Routes.Home.name) {
             HomeView(navigateToDetails = { id -> navigator.navigate("${Routes.Tour.name}/${id}") })
         }

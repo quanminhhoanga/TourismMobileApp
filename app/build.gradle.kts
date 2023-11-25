@@ -52,6 +52,10 @@ android {
 
 dependencies {
 
+    // share preferences
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+
     // Navigation compose
     val navVersion = "2.7.5"
     implementation("androidx.navigation:navigation-compose:$navVersion")

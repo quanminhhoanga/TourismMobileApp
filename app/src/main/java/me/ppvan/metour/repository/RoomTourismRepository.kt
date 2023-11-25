@@ -24,12 +24,19 @@ class RoomTourismRepository : TourismRepository {
     }
 
     override suspend fun updateFavoriteTourism(id: Int) {
+        delay(500)
         val tourism = findTourismById(id)
         tourism.isFavorite = !tourism.isFavorite
     }
 
     override suspend fun findTourismById(id: Int): Tourism {
+        delay(200)
         return FakeTourismDataSource.dummyTourism.find { tourism -> tourism.id == id }
             ?: Tourism.default()
+    }
+
+    override suspend fun findTourismByPredicate(predicate: (Tourism) -> Boolean): List<Tourism> {
+//        delay(500)
+        return FakeTourismDataSource.dummyTourism.filter { predicate(it) }
     }
 }

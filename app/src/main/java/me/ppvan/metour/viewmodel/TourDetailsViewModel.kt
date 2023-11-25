@@ -7,22 +7,25 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.ppvan.metour.EventBus
+import me.ppvan.metour.MetourEvent
 import me.ppvan.metour.data.Schedule
 import me.ppvan.metour.data.Tourism
 import me.ppvan.metour.repository.TourismRepository
 
+
 class TourDetailsViewModel constructor(private val repository: TourismRepository) : ViewModel() {
     val favorite = mutableStateOf(false)
-    val subcribed = mutableStateOf(false)
-    val dialogVisible = mutableStateOf(false)
+    val subscribed = mutableStateOf(false)
 
     private val _listSelectedSchedule = mutableStateListOf<Int>()
     val listSelectedSchedule: List<Int> get() = _listSelectedSchedule
 
     fun updateFavoriteTourism(id: Int): String {
         viewModelScope.launch {
-            val updateResult = repository.updateFavoriteTourism(id)
+            repository.updateFavoriteTourism(id)
             isFavoriteTourism(id)
+            EventBus.produceEvent(MetourEvent.FAVORITE_CHANGED)
         }
 
         return ""
@@ -44,8 +47,10 @@ class TourDetailsViewModel constructor(private val repository: TourismRepository
     }
 
     fun updateSubscribedState() {
-        dialogVisible.value = false
-        subcribed.value = !subcribed.value
+        subscribed.value = !subscribed.value
+        viewModelScope.launch {
+            EventBus.produceEvent(MetourEvent.SUBSCRIBED_CHANGED)
+        }
     }
 
     suspend fun getDetailById(id: Int): Tourism {

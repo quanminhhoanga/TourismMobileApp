@@ -70,7 +70,7 @@ fun TourDetailsView(id: Int, onBackPress: () -> Unit) {
         mutableStateOf(false)
     }
     val isFavorite by viewModel.favorite
-    val subscribed by viewModel.subcribed
+    val subscribed by viewModel.subscribed
 
     LaunchedEffect(key1 = id) {
         tourism = viewModel.getDetailById(id)

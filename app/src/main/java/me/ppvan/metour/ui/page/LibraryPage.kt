@@ -8,14 +8,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.ppvan.metour.data.FakeTourismDataSource
+import me.ppvan.metour.viewmodel.LibraryViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LibraryPage() {
+fun LibraryPage(viewModel: LibraryViewModel, navigateToDetails: (Int) -> Unit) {
 
-    val recommendations = FakeTourismDataSource.dummyTourism
+    val visibleTours = viewModel.visibleTours.toList()
 
     Scaffold(
         topBar = {
@@ -23,7 +23,9 @@ fun LibraryPage() {
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            TourList(tours = recommendations, {})
+            TourList(tours = visibleTours) { id ->
+                navigateToDetails(id)
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ppvan.metour.data.Tourism
 import me.ppvan.metour.repository.TourismRepository
 
@@ -56,7 +57,9 @@ class TourViewModel(private val tourismRepository: TourismRepository) : ViewMode
                 "TourViewModel",
                 "query = ${query}, search: ${newSuggestions.joinToString { it.name }}"
             )
-            this@TourViewModel.results.addAll(newSuggestions)
+            withContext(Dispatchers.Main) {
+                results.addAll(newSuggestions)
+            }
         }
     }
 
@@ -74,7 +77,9 @@ class TourViewModel(private val tourismRepository: TourismRepository) : ViewMode
                 "TourViewModel",
                 "query = ${query}, suggestions: ${newSuggestions.joinToString { it.name }}"
             )
-            this@TourViewModel.suggestions.addAll(newSuggestions)
+            withContext(Dispatchers.Main) {
+                suggestions.addAll(newSuggestions)
+            }
         }
     }
 

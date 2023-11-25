@@ -8,4 +8,6 @@ interface TourismRepository {
     suspend fun findTourByName(name: String): List<Tourism>
     suspend fun updateFavoriteTourism(id: Int)
     suspend fun findTourismById(id: Int): Tourism
+
+    suspend fun findTourismByPredicate(predicate: (Tourism) -> Boolean): List<Tourism>
 }

@@ -11,7 +11,8 @@ data class Tourism(
     val ticketPrice: String,
     val picture: Int,
     val schedule: List<Schedule>,
-    var isFavorite: Boolean
+    var isFavorite: Boolean,
+    var isSubscribed: Boolean = false
 ) {
     companion object {
         // Default Tourism object with some default values
@@ -25,7 +26,8 @@ data class Tourism(
                 ticketPrice = "Default Ticket Price",
                 picture = R.drawable.hoalo, // Assuming you have a default picture resource
                 schedule = emptyList(),
-                isFavorite = false
+                isFavorite = false,
+                isSubscribed = false
             )
         }
     }

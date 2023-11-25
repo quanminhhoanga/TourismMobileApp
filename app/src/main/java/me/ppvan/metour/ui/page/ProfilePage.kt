@@ -1,10 +1,12 @@
 package me.ppvan.metour.ui.page
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -59,38 +61,78 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import me.ppvan.metour.R
+import me.ppvan.metour.data.FakeTourismDataSource
+import me.ppvan.metour.data.User
 import me.ppvan.metour.ui.component.rememberImeState
+import me.ppvan.metour.viewmodel.ProfileViewModel
+import me.ppvan.moon.utils.ScaleTransition
 
 
 @Composable
-fun ProfilePage() {
-    ProfileViewPage()
-//    ProfileEditPage()
+fun ProfilePage(profileViewModel: ProfileViewModel) {
+
+    val user by profileViewModel.loggedInUser
+    val editMode by profileViewModel.editMode
+
+    AnimatedContent(
+        targetState = editMode,
+        label = "page-navigation",
+        transitionSpec = {
+            ScaleTransition.scaleUp.enterTransition()
+                .togetherWith(ScaleTransition.scaleUp.exitTransition())
+        }
+    ) { editModeVisible ->
+        if (editModeVisible) {
+            ProfileEditPage(
+                user,
+                onBackPressed = { profileViewModel.navigateToViewMode() },
+                onSubmit = { user ->
+                    profileViewModel.updateUserProfile(user)
+                })
+        } else {
+            ProfileViewPage(user) { profileViewModel.navigateToEditMode() }
+        }
+    }
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileEditPage() {
-
-    val photoPicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri ->
-
-        }
-    )
-
+fun ProfileEditPage(
+    user: User,
+    onBackPressed: () -> Unit,
+    onSubmit: (User) -> Unit
+) {
     var expand by remember {
         mutableStateOf(false)
     }
-    val cities = arrayOf("Hanoi", "Hai Phong", "Quang Ninh")
-    var selected by remember {
-        mutableStateOf(cities[0])
+    val cities = FakeTourismDataSource.dummyCities
+    var city by remember {
+        mutableStateOf(user.city)
+    }
+    var fullName by remember {
+        mutableStateOf(user.fullName)
+    }
+    var email by remember {
+        mutableStateOf(user.email)
+    }
+    var avatarUrl by remember {
+        mutableStateOf(user.avatarUrl)
+    }
+    var phoneNumber by remember {
+        mutableStateOf(user.phoneNumber)
     }
 
     val formGroup = Modifier
@@ -100,6 +142,13 @@ fun ProfileEditPage() {
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
 
+    val context = LocalContext.current
+    val photoPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            avatarUrl = uri.toString()
+        }
+    )
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
@@ -122,10 +171,12 @@ fun ProfileEditPage() {
                 )
             },
             navigationIcon = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = "Back"
-                )
+                IconButton(onClick = { onBackPressed() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
             }
 
         )
@@ -144,12 +195,25 @@ fun ProfileEditPage() {
                         )
                     }
             ) {
-                Image(
+//                Image(
+//                    modifier = Modifier
+//                        .matchParentSize()
+//                        .clip(CircleShape),
+//                    painter = painterResource(id = R.drawable.bocchi),
+//                    contentDescription = null
+//                )
+                AsyncImage(
                     modifier = Modifier
                         .matchParentSize()
                         .clip(CircleShape),
-                    painter = painterResource(id = R.drawable.bocchi),
-                    contentDescription = null
+                    model = ImageRequest.Builder(context)
+                        .data(avatarUrl)
+                        .error(R.drawable.bocchi)
+                        .crossfade(true)
+                        .build(),
+                    placeholder = painterResource(R.drawable.bocchi),
+                    contentDescription = stringResource(R.string.user_avatar),
+                    contentScale = ContentScale.Crop,
                 )
                 Box(
                     modifier = Modifier
@@ -174,7 +238,7 @@ fun ProfileEditPage() {
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "@ppvan",
+                text = "@${user.username}",
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
@@ -191,22 +255,22 @@ fun ProfileEditPage() {
         ) {
             OutlinedTextField(
                 modifier = formGroup,
-                value = "Phạm Văn Phúc",
-                onValueChange = {},
+                value = user.fullName,
+                onValueChange = { fullName = it },
                 label = { Text(text = "Họ và tên") },
                 colors = OutlinedTextFieldDefaults.colors()
             )
             OutlinedTextField(
                 modifier = formGroup,
-                value = "phuclinux123@gmail.com",
-                onValueChange = {},
+                value = user.email,
+                onValueChange = { email = it },
                 label = { Text(text = "Email") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
             OutlinedTextField(
                 modifier = formGroup,
-                value = "0981234567",
-                onValueChange = {},
+                value = user.phoneNumber,
+                onValueChange = { phoneNumber = it },
                 label = { Text(text = "Số điện thoại") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
             )
@@ -216,7 +280,7 @@ fun ProfileEditPage() {
                 expanded = expand,
                 onExpandedChange = { expand = !expand }) {
                 OutlinedTextField(
-                    value = selected,
+                    value = city,
                     label = { Text(text = "Tỉnh/Thành Phố") },
                     onValueChange = {},
                     readOnly = true,
@@ -234,7 +298,7 @@ fun ProfileEditPage() {
                         DropdownMenuItem(
                             text = { Text(text = item) },
                             onClick = {
-                                selected = item
+                                city = item
                                 expand = false
 //                                Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                             }
@@ -244,7 +308,11 @@ fun ProfileEditPage() {
             }
 
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    val newUser = User(user.username, avatarUrl, fullName, email, phoneNumber, city)
+                    onSubmit(newUser)
+                    Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp)
@@ -260,7 +328,12 @@ fun ProfileEditPage() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileViewPage() {
+fun ProfileViewPage(
+    user: User,
+    onEditClick: () -> Unit
+) {
+    val context = LocalContext.current
+
     Column(Modifier.fillMaxSize()) {
         TopAppBar(
             title = {
@@ -273,7 +346,7 @@ fun ProfileViewPage() {
                 )
             },
             actions = {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { onEditClick() }) {
                     Icon(imageVector = Icons.Outlined.EditNote, contentDescription = null)
                 }
             }
@@ -287,17 +360,24 @@ fun ProfileViewPage() {
                         .fillMaxWidth(0.4f)
                         .aspectRatio(1f)
                 ) {
-                    Image(
+                    AsyncImage(
                         modifier = Modifier
                             .matchParentSize()
                             .clip(CircleShape),
-                        painter = painterResource(id = R.drawable.bocchi),
-                        contentDescription = null
+                        model = ImageRequest.Builder(context)
+                            .data(user.avatarUrl)
+                            .error(R.drawable.bocchi)
+                            .crossfade(true)
+                            .build(),
+                        placeholder = painterResource(R.drawable.bocchi),
+                        contentDescription = stringResource(R.string.user_avatar),
+                        contentScale = ContentScale.Crop,
                     )
+
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "@ppvan",
+                    text = "@${user.username}",
                     style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
                 )
 
@@ -320,7 +400,7 @@ fun ProfileViewPage() {
                                 )
                             },
                             label = "Họ và tên",
-                            content = "Phạm Văn Phúc"
+                            content = user.fullName
                         )
 
                         ProfileListItem(
@@ -332,7 +412,7 @@ fun ProfileViewPage() {
                                 )
                             },
                             label = "Email",
-                            content = "phuclaplace@gmail.com"
+                            content = user.email
                         )
 
                         ProfileListItem(
@@ -344,7 +424,7 @@ fun ProfileViewPage() {
                                 )
                             },
                             label = "Số điện thoại",
-                            content = "0981234567"
+                            content = user.phoneNumber
                         )
 
                         ProfileListItem(
@@ -356,7 +436,7 @@ fun ProfileViewPage() {
                                 )
                             },
                             label = "Tỉnh/Thành Phố",
-                            content = "Hà Nội"
+                            content = user.city
                         )
                     }
                 }
@@ -410,5 +490,5 @@ fun ProfileListItem(
 @Preview
 @Composable
 fun ProfilePagePreview() {
-    ProfileViewPage()
+    ProfileViewPage(User.default(), {})
 }

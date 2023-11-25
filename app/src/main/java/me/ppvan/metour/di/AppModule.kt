@@ -8,7 +8,7 @@ import me.ppvan.metour.repository.TourismRepository
 
 interface AppModule {
     val tourRepo: TourismRepository
-    val userRepo: AuthService
+    val authService: AuthService
 }
 
 class AppModuleImpl(private val appContext: Context) : AppModule {
@@ -16,7 +16,7 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
         RoomTourismRepository()
     }
 
-    override val userRepo: AuthService by lazy {
+    override val authService: AuthService by lazy {
         RoomAuthService()
     }
 }

@@ -58,7 +58,8 @@ fun RegisterView() {
             .fillMaxSize()
             .padding(start = 30.dp, end = 30.dp, top = 20.dp, bottom = 20.dp)
             .navigationBarsPadding()
-            .statusBarsPadding()
+            .statusBarsPadding(),
+        color = MaterialTheme.colorScheme.surface
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -69,20 +70,20 @@ fun RegisterView() {
                 .imePadding()
         ) {
             TopAppBarMinimalTitle {
-                Text(text = "Sign Up")
+                Text(text = "Đăng ký")
             }
             Spacer(modifier = Modifier.height(20.dp))
             Column {
                 CommonTextField(
                     text = firstName,
-                    placeholder = "First Name",
+                    placeholder = "Tên",
                     onValueChange = { firstName = it },
                     isPasswordTextField = false
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 CommonTextField(
                     text = lastName,
-                    placeholder = "Last Name",
+                    placeholder = "Họ",
                     onValueChange = { lastName = it },
                     isPasswordTextField = false
                 )
@@ -96,20 +97,20 @@ fun RegisterView() {
                 Spacer(modifier = Modifier.height(16.dp))
                 CommonTextField(
                     text = password,
-                    placeholder = "Password",
+                    placeholder = "Mật khẩu",
                     onValueChange = { password = it },
                     isPasswordTextField = true
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 CommonTextField(
                     text = confirmPassword,
-                    placeholder = "Confirm Password",
+                    placeholder = "Xác nhận mật khẩu",
                     onValueChange = { confirmPassword = it },
                     isPasswordTextField = true
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
-            CommonLoginButton(text = "Register", modifier = Modifier.fillMaxWidth()) {
+            CommonLoginButton(text = "Đăng ký", modifier = Modifier.fillMaxWidth()) {
             }
             Spacer(modifier = Modifier.height(20.dp))
             Row(
@@ -117,10 +118,10 @@ fun RegisterView() {
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                CommonText(text = "I'm a new user,", fontSize = 18.sp) {}
+                CommonText(text = "Đã có tài khoản?,", fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurface) {}
                 Spacer(modifier = Modifier.width(4.dp))
                 CommonText(
-                    text = "Sign In",
+                    text = "Đăng nhập",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.W500

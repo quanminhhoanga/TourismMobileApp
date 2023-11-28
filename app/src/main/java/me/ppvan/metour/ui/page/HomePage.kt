@@ -88,7 +88,7 @@ fun HomeContent(
         })
 
     Text(
-        text = "Recommendation",
+        text = "Đề xuất",
         fontSize = 18.sp,
 //        color = BlackColor500, fontFamily = poppinsFamily,
         fontWeight = FontWeight.SemiBold,
@@ -132,7 +132,7 @@ fun HomeHeader(modifier: Modifier = Modifier, navigateToAboutMe: () -> Unit) {
             )
             Spacer(modifier = modifier.height(6.dp))
             Text(
-                text = "Find your next adventure",
+                text = "Cùng tìm những trải nghiệm mới",
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Light,

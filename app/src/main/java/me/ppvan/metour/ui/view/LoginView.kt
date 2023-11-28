@@ -48,7 +48,7 @@ fun LoginView() {
             modifier = Modifier.fillMaxWidth()
         ) {
             TopAppBarMinimalTitle {
-                Text(text = "Log In")
+                Text(text = "Đăng nhập")
             }
             Spacer(modifier = Modifier.height(20.dp))
             Column {
@@ -61,7 +61,7 @@ fun LoginView() {
                 Spacer(modifier = Modifier.height(16.dp))
                 CommonTextField(
                     text = password,
-                    placeholder = "Password",
+                    placeholder = "Mật khẩu",
                     onValueChange = { password = it },
                     isPasswordTextField = true
                 )
@@ -76,10 +76,10 @@ fun LoginView() {
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                CommonText(text = "I'm a new user,", fontSize = 18.sp) {}
+                CommonText(text = "Chưa có tài khoản?", fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurface) {}
                 Spacer(modifier = Modifier.width(4.dp))
                 CommonText(
-                    text = "Sign Up",
+                    text = "Đăng ký",
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.W500

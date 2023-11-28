@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -39,35 +41,37 @@ fun PopularPlaceCard(tourism: Tourism, modifier: Modifier = Modifier, onClickCar
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .height(220.dp)
-                        .width(180.dp)
+//                        .fillMaxWidth(0.8f)
+//                        .aspectRatio(4/3f)
+                        .height(280.dp)
+                        .width(240.dp)
                         .clip(RoundedCornerShape(18.dp))
                 )
-                Card(
-                    shape = RoundedCornerShape(bottomStart = 18.dp),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = modifier
-//                        .background(color = WhiteColor)
-                            .height(30.dp)
-                            .padding(bottom = 4.dp, end = 2.dp, start = 5.5.dp)
-
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_star),
-                            modifier = modifier.size(16.dp),
-                            contentDescription = ""
-                        )
-                        Spacer(modifier = modifier.width(4.dp))
-                        Text(
-                            text = tourism.rate,
-                            fontSize = 14.sp,
-//                        fontFamily = poppinsFamily,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
-                }
+//                Card(
+//                    shape = RoundedCornerShape(bottomStart = 18.dp),
+//                ) {
+//                    Row(
+//                        verticalAlignment = Alignment.CenterVertically,
+//                        modifier = modifier
+////                        .background(color = WhiteColor)
+//                            .height(30.dp)
+//                            .padding(bottom = 4.dp, end = 2.dp, start = 5.5.dp)
+//
+//                    ) {
+//                        Image(
+//                            painter = painterResource(id = R.drawable.icon_star),
+//                            modifier = modifier.size(16.dp),
+//                            contentDescription = ""
+//                        )
+//                        Spacer(modifier = modifier.width(4.dp))
+//                        Text(
+//                            text = tourism.rate,
+//                            fontSize = 14.sp,
+////                        fontFamily = poppinsFamily,
+//                            fontWeight = FontWeight.SemiBold
+//                        )
+//                    }
+//                }
             }
             Column(modifier = modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp)) {
                 Text(

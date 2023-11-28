@@ -64,27 +64,27 @@ fun RecommendationCard(modifier: Modifier, tourism: Tourism, onClickCard: () -> 
 //                color = GreyColor300
                 )
             }
-            Row(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(end = 16.dp),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.icon_star),
-                    modifier = modifier.size(18.dp),
-                    contentDescription = ""
-                )
-                Spacer(modifier = modifier.width(6.dp))
-                Text(
-                    text = tourism.rate,
-//                fontFamily = poppinsFamily,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 14.sp,
-//                color = BlackColor500
-                )
-            }
+//            Row(
+//                modifier = modifier
+//                    .fillMaxWidth()
+//                    .padding(end = 16.dp),
+//                horizontalArrangement = Arrangement.End,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Image(
+//                    painter = painterResource(id = R.drawable.icon_star),
+//                    modifier = modifier.size(18.dp),
+//                    contentDescription = ""
+//                )
+//                Spacer(modifier = modifier.width(6.dp))
+//                Text(
+//                    text = tourism.rate,
+////                fontFamily = poppinsFamily,
+//                    fontWeight = FontWeight.Medium,
+//                    fontSize = 14.sp,
+////                color = BlackColor500
+//                )
+//            }
         }
     }
 }

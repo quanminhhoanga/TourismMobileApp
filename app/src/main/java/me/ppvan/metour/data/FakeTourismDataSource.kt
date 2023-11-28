@@ -112,23 +112,23 @@ object FakeTourismDataSource {
     val dummyTourism = listOf(
         Tourism(
             id = 1,
-            name = "Aogashima",
-            location = "Tokyo, Jepang",
+            name = "Hoàng Thành Thăng Long",
+            location = "Điện Biên, Ba Đình, Hà Nội",
             rate = "4.8",
             description =
-            "Pulau Aogashima ini memang masih hijau, bersih, dan memiliki kawah gunung berapi yang masih aktif, meskipun masih aktif tempat ini juga memiliki penduduk sekitar 200 penduduk, yang uniknya masyarakat di sekitar pulau ini jauh sekali dengan dunia modern, mereka biasanya melakukan aktifitas mendaki dan yang paling asik adalah mereka biasanya sauna di uap panas yang ada di sekitar bagian tengah Pulau Augashima.",
+            "Hoàng thành Thăng Long được xây dựng vào thế kỷ XI dưới triều nhà Lý ở Việt Nam, đánh dấu nền độc lập của Đại Việt. Được xây dựng trên tàn tích của một pháo đài Trung Quốc vào thế kỷ VII, nơi đây là trung tâm chính trị và quyền lực của Đại Việt trong suốt 13 thế kỷ. Ngày nay, Hoàng thành cùng khu khảo cổ số 18 Hoàng Diệu phản ánh nền văn hóa Đông Nam Á đặc sắc nơi Đồng bằng Sông Hồng, cửa ngõ thông thương giữa Trung Hoa cổ đại và Vương quốc cổ Champa",
             ticketPrice = "\$ 25",
-            picture = R.drawable.hoalo,
+            picture = R.drawable.hoangthanhthanglong,
             isFavorite = false,
             schedule = dummySchedule
         ),
         Tourism(
             id = 2,
-            name = "Antelope Canyon",
-            location = "Amerika Serikat",
+            name = "Phố cổ Hội An",
+            location = "Hội An, Quảng Nam",
             rate = "4.2",
             description =
-            "Tempat ini memang menjadi tempat yang indah karena saat dinding Antelope Canyon ini terpantul cahaya maka memberikan warna-warna yang indah, hal ini lah yang menarik wisatan dari seluruh dunia, biasanya mereka disini melakukan aktifitas mendaki dan berkemah untuk melihat bagaimana indahnya Antelope Cayon saat terpantul matahari.",
+            "Một đô thị cổ nằm ở hạ lưu sông Thu Bồn, thuộc vùng đồng bằng ven biển tỉnh Quảng Nam, Việt Nam, cách thành phố Đà Nẵng khoảng 30 km về phía Nam. Nhờ những yếu tố địa lý và khí hậu thuận lợi, Hội An từng là một thương cảng quốc tế sầm uất, nơi gặp gỡ của những thuyền buôn Nhật Bản, Trung Quốc và phương Tây trong suốt thế kỷ XVII và XVIII.",
             ticketPrice = "\$ 12",
             picture = R.drawable.hoalo,
             isFavorite = false,
@@ -136,11 +136,10 @@ object FakeTourismDataSource {
         ),
         Tourism(
             id = 3,
-            name = "Beachy Head",
-            location = "London, Inggris",
+            name = "Danh thắng Tràng An",
+            location = "Ninh Bình, Việt Nam",
             rate = "4.5",
-            description =
-            "Jalan Asia Afrika di Bandung memiliki kaitan yang sangat erat dengan pendirian kota Kembang ini. Karena pada saat itu, Gubernur Jenderal Herman Willem Deaendels dari Belanda menancapkan tongkatnya saat memerintahkan pendirian kota ini, yang kemudian diabadikan menjadi tugu Bandung Nol Kilometer.",
+            description = "Quần thể di sản thế giới Tràng An mang trong mình những khung cảnh thiên nhiên độc đáo từ đá núi, hệ sinh thái, rừng cây, thảm thực vật, đồng lúa, hồ đầm và những tuyến du thuyền trên sông Ngô Đồng, suối Tiên, sông Vọc, sông Sào Khê, sông Đền Vối, sông Bến Đang. Nơi đây sở hữu những hang động đẹp như động Thiên Hà, động Thiên Thanh, động Tiên, động Tiên Cá, động Vái Giời, động Thủy Cung, hang Bụt, hang Tam Cốc, hang động Tràng An, hang Sinh Dược",
             ticketPrice = "\$ 15",
             picture = R.drawable.hoalo,
             isFavorite = false,
@@ -148,35 +147,32 @@ object FakeTourismDataSource {
         ),
         Tourism(
             id = 4,
-            name = "Turquoise Lake",
-            location = "Cina",
+            name = "Cố đô Huế",
+            location = "Thừa Thiên Huế",
             rate = "4.7",
-            description =
-            "Danau yang cantik ini memang memiliki pemandangan yang sangat luar biasa dari permukaan danau ini anda bisa melihat betapa jernihnya air ini bagaikan di negeri dongeng anda bisa berkaca dari atas permukaan danau ini. Karena keindahan dari Crystalline Turquoise Lake akhirnya pada tahun 1992 UNESCO menjadikan kawasan ini sebagai cagar alam di Negara Cina yang menjadi situs warisan dunia.",
+            description = "thủ phủ Đàng Trong dưới thời các chúa Nguyễn từ năm 1687 đến 1774, sau đó là thủ đô của triều đại Tây Sơn từ năm 1788 khi Hoàng đế Quang Trung tức Nguyễn Huệ lên ngôi. Khi Nguyễn Ánh lên ngôi vào năm 1802 lấy niên hiệu là Gia Long, ông cũng chọn thành Phú Xuân làm kinh đô cho nhà Nguyễn – triều đại phong kiến cuối cùng trong lịch sử Việt Nam. Huế kết thúc sứ mệnh là thủ đô Việt Nam vào năm 1945 khi vị hoàng đế cuối cùng của nhà Nguyễn là Bảo Đại thoái vị",
             ticketPrice = "\$ 18",
-            picture = R.drawable.hoalo,
+            picture = R.drawable.codohue,
             isFavorite = false,
             schedule = dummySchedule
         ),
         Tourism(
             id = 5,
-            name = "Kota Bern",
-            location = "Amtsbezirke, Swiss",
+            name = "Thành nhà Hồ",
+            location = "Huyện Vĩnh Lộc, Thanh Hóa",
             rate = "4.5",
-            description =
-            "Kota terindah di dunia ini menjad ibu kota Negara Swiss, untuk anda yang belum tau Swiss itu sebenarnya berada di Eropa Tengah. Nah kenapa di beri nama Kota Bern? karena penamaan dari Kota Bern sendiri memiliki arti yaitu Bern dalam bahasa Jerman artinya Beruang, makanya saat anda berada di Kota Bern maka anda bisa melihat beberapa Simbol beruang pada kota ini.",
+            description = "kinh đô nước Đại Ngu (quốc hiệu của Việt Nam dưới thời nhà Hồ), nằm trên địa phận tỉnh Thanh Hóa. Đây là tòa thành kiên cố với kiến trúc độc đáo bằng đá có quy mô lớn hiếm hoi ở Việt Nam, có giá trị và độc đáo nhất, duy nhất còn lại ở tại Đông Nam Á và là một trong rất ít những thành lũy bằng đá còn lại trên thế giới",
             ticketPrice = "\$ 12",
-            picture = R.drawable.hoalo,
+            picture = R.drawable.thanhnhaho,
             isFavorite = false,
             schedule = dummySchedule
         ),
         Tourism(
             id = 6,
             name = "Sa Pa",
-            location = "Lao Cai, Vietnam",
+            location = "Sa Pa,Lào Cai",
             rate = "4.3",
-            description =
-            "tempat wisata terindah dunia Sa Pa ini memang menyuguhkan pemandangan sangat indah, disini anda bisa melihat pemandangan yang indah mirip dengan lukisan, anda bisa melihat pegunungan yang berjejer rapi, hamparan sawah yang hijau di lereng gunung, dan disekitar Sa Pa anda bisa melihat berwarna-warni tanaman yang meberikan kesan pemandangan alam yang masih asri, memang Sa Pa ini pantas disebut sebagai surga tersembunyi di Vietnam bagi wisatawan yang sudah pernah berkunjung ketempat ini.",
+            description = "nhiều cảnh đẹp tự nhiên như thác Bạc cao khoảng 200m, cầu Mây là một di tích lịch sử của người dân tộc, cổng Trời là điểm cao nhất mà đường bộ có thể đi tới để đứng ngắm đỉnh Fansipan, rừng Trúc, động Tả Phìn, bãi đá cổ Sa Pa nằm trong Thung lũng Mường Hoa. Hàm Rồng là nơi trồng rất nhiều loại hoa, màu sắc sặc sỡ và được trồng theo từng khuôn viên. Ở nơi đây cũng có vườn lan với nhiều loại hoa quý hiếm",
             ticketPrice = "\$ 22",
             picture = R.drawable.hoalo,
             isFavorite = false,

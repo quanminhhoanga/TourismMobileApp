@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -18,6 +19,8 @@ import me.ppvan.metour.ui.view.HomeView
 import me.ppvan.metour.ui.view.LoginView
 import me.ppvan.metour.ui.view.RegisterView
 import me.ppvan.metour.ui.view.TourDetailsView
+import me.ppvan.metour.viewmodel.RegisterViewModel
+import me.ppvan.metour.viewmodel.viewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +46,11 @@ class MainActivity : ComponentActivity() {
 fun MeTourApp() {
 
     val navigator = rememberNavController()
+    val registerViewModel = viewModel<RegisterViewModel>(factory = viewModelFactory {
+        RegisterViewModel(MeTourApplication.appModule.authService)
+    })
 
-    NavHost(navController = navigator, startDestination = Routes.Home.name) {
+    NavHost(navController = navigator, startDestination = Routes.Register.name) {
         composable(route = Routes.Home.name) {
             HomeView(navigateToDetails = { id -> navigator.navigate("${Routes.Tour.name}/${id}") })
         }
@@ -63,7 +69,14 @@ fun MeTourApp() {
             }
         }
         composable(route = Routes.Register.name) {
-            RegisterView()
+            RegisterView(
+                state = registerViewModel.state.value,
+                onRegisterClick = { user ->
+                    registerViewModel.register(user); navigator.navigate(
+                    Routes.Login.name
+                )
+                },
+                onLoginClick = { navigator.navigate(Routes.Login.name) })
         }
 
         composable(route = Routes.Login.name) {

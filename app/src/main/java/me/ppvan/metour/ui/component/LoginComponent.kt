@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.ppvan.metour.ui.theme.LightGrayColor
-import me.ppvan.metour.ui.theme.PinkColor
 
 @Composable
 fun CommonText(
@@ -48,6 +49,7 @@ fun CommonText(
 fun CommonLoginButton(
     text: String,
     modifier: Modifier = Modifier,
+    enable: Boolean = true,
     onClick: () -> Unit
 ) {
     Button(
@@ -64,7 +66,8 @@ fun CommonLoginButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Transparent
         ),
-        onClick = { onClick() }
+        onClick = { onClick() },
+        enabled = enable
     ) {
         Text(text = text, fontSize = 20.sp, color = Color.White)
     }
@@ -76,6 +79,8 @@ fun CommonTextField(
     text: String,
     placeholder: String,
     isPasswordTextField: Boolean,
+    keyboardOption: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+    valid: Boolean = true,
     onValueChange: (String) -> Unit
 ) {
     OutlinedTextField(
@@ -85,12 +90,12 @@ fun CommonTextField(
         maxLines = 1,
         singleLine = true,
         colors = OutlinedTextFieldDefaults.colors(
-            cursorColor = Color.Black,
-            focusedBorderColor = PinkColor,
+            focusedBorderColor = if (valid) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
         ),
         shape = RoundedCornerShape(15.dp),
         modifier = Modifier.fillMaxWidth(),
         visualTransformation = if (isPasswordTextField) PasswordVisualTransformation()
-        else VisualTransformation.None
+        else VisualTransformation.None,
+        keyboardOptions = keyboardOption
     )
 }

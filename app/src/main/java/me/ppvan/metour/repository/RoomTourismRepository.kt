@@ -1,10 +1,12 @@
 package me.ppvan.metour.repository
 
 import kotlinx.coroutines.delay
+import me.ppvan.metour.dao.UserDao
 import me.ppvan.metour.data.FakeTourismDataSource
 import me.ppvan.metour.data.Tourism
 
-class RoomTourismRepository : TourismRepository {
+class RoomTourismRepository constructor(val tourDao: UserDao) : TourismRepository {
+
     override suspend fun findRecommendations(): List<Tourism> {
         delay(1000)
         return FakeTourismDataSource.dummyTourism

@@ -1,5 +1,7 @@
 package me.ppvan.metour.ui.view
 
+import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,30 +29,65 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.ppvan.metour.data.User
 import me.ppvan.metour.ui.component.CommonLoginButton
 import me.ppvan.metour.ui.component.CommonText
 import me.ppvan.metour.ui.component.CommonTextField
 import me.ppvan.metour.ui.component.TopAppBarMinimalTitle
 import me.ppvan.metour.ui.component.rememberImeState
+import me.ppvan.metour.viewmodel.RegisterState
 
+@SuppressLint("ShowToast")
 @Composable
 //navController: NavController
-fun RegisterView() {
-    var firstName by remember { mutableStateOf("") }
-    var lastName by remember { mutableStateOf("") }
+fun RegisterView(
+    state: RegisterState,
+    onRegisterClick: (User) -> Unit,
+    onLoginClick: () -> Unit
+) {
+    var fullName by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var username by remember {
+        mutableStateOf("")
+    }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+
+    val valid = listOf(username, email, phoneNumber, password).all { it.isNotBlank() }
+    val passwordMatch = password.equals(confirmPassword)
 
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+        }
+    }
+    LaunchedEffect(key1 = state) {
+        when (state) {
+            RegisterState.Success -> Toast.makeText(
+                context,
+                "Đăng ký thành công",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            RegisterState.Fail -> Toast.makeText(
+                context,
+                "Đăng ký thất bại, hãy thử lại sau",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            else -> {
+
+            }
         }
     }
 
@@ -75,23 +113,33 @@ fun RegisterView() {
             Spacer(modifier = Modifier.height(20.dp))
             Column {
                 CommonTextField(
-                    text = firstName,
-                    placeholder = "Tên",
-                    onValueChange = { firstName = it },
+                    text = fullName,
+                    placeholder = "Họ và Tên",
+                    onValueChange = { fullName = it },
                     isPasswordTextField = false
                 )
                 Spacer(modifier = Modifier.height(20.dp))
+
                 CommonTextField(
-                    text = lastName,
-                    placeholder = "Họ",
-                    onValueChange = { lastName = it },
+                    text = email,
+                    placeholder = "Email",
+                    keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    onValueChange = { email = it },
                     isPasswordTextField = false
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 CommonTextField(
-                    text = email,
-                    placeholder = "Email",
-                    onValueChange = { email = it },
+                    text = phoneNumber,
+                    placeholder = "Số điện thoại",
+                    onValueChange = { phoneNumber = it },
+                    keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    isPasswordTextField = false
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                CommonTextField(
+                    text = username,
+                    placeholder = "Tên người dùng",
+                    onValueChange = { username = it },
                     isPasswordTextField = false
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -99,18 +147,34 @@ fun RegisterView() {
                     text = password,
                     placeholder = "Mật khẩu",
                     onValueChange = { password = it },
-                    isPasswordTextField = true
+                    isPasswordTextField = true,
+                    valid = passwordMatch
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 CommonTextField(
                     text = confirmPassword,
                     placeholder = "Xác nhận mật khẩu",
                     onValueChange = { confirmPassword = it },
-                    isPasswordTextField = true
+                    isPasswordTextField = true,
+                    valid = passwordMatch
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
-            CommonLoginButton(text = "Đăng ký", modifier = Modifier.fillMaxWidth()) {
+            CommonLoginButton(
+                text = "Đăng ký",
+                enable = valid and passwordMatch,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                val user = User(
+                    fullName = fullName,
+                    phoneNumber = phoneNumber,
+                    avatarUrl = "",
+                    username = username,
+                    email = email,
+                    password = password,
+                    city = "Hà Nội"
+                )
+                onRegisterClick(user)
             }
             Spacer(modifier = Modifier.height(20.dp))
             Row(
@@ -118,7 +182,11 @@ fun RegisterView() {
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                CommonText(text = "Đã có tài khoản?", fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurface) {}
+                CommonText(
+                    text = "Đã có tài khoản?",
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                ) {}
                 Spacer(modifier = Modifier.width(4.dp))
                 CommonText(
                     text = "Đăng nhập",
@@ -126,7 +194,7 @@ fun RegisterView() {
                     fontSize = 18.sp,
                     fontWeight = FontWeight.W500
                 ) {
-
+                    onLoginClick()
                 }
             }
         }
@@ -136,5 +204,5 @@ fun RegisterView() {
 @Composable
 @Preview(showBackground = true)
 fun RegisterPreview() {
-    RegisterView()
+    RegisterView(state = RegisterState.Idle, onLoginClick = {}, onRegisterClick = {})
 }

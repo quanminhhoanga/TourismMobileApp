@@ -46,7 +46,7 @@ import me.ppvan.moon.utils.SlideTransition
 fun HomeView(navigateToDetails: (Int) -> Unit) {
 
     var selectedPage by remember {
-        mutableStateOf(TourPages.Profile)
+        mutableStateOf(TourPages.Home)
     }
     val homeViewModel = viewModel<HomeViewModel>(factory = viewModelFactory {
         HomeViewModel(MeTourApplication.appModule.tourRepo)

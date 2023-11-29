@@ -1,7 +1,9 @@
 package me.ppvan.metour.repository
 
+import me.ppvan.metour.data.User
+
 interface AuthService {
-    fun register(username: String, email: String, phone: String, password: String)
-    fun login(email: String, password: String): String
+    fun register(user: User): Boolean
+    fun login(email: String, password: String): User
     fun logout(): Boolean
 }

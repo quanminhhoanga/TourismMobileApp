@@ -309,7 +309,17 @@ fun ProfileEditPage(
 
             Button(
                 onClick = {
-                    val newUser = User(user.username, avatarUrl, fullName, email, phoneNumber, city)
+                    val newUser =
+                        User(
+                            0L,
+                            user.username,
+                            avatarUrl,
+                            fullName,
+                            email,
+                            phoneNumber,
+                            user.password,
+                            city
+                        )
                     onSubmit(newUser)
                     Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
                 },

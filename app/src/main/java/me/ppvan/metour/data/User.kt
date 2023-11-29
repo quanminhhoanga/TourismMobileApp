@@ -1,7 +1,14 @@
 package me.ppvan.metour.data
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class User(
+    @PrimaryKey(autoGenerate = true)
+    val userId: Long = 0,
     val username: String,
+    val password: String,
     val avatarUrl: String,
     val fullName: String,
     val email: String,
@@ -12,6 +19,7 @@ data class User(
         fun default(): User {
             return User(
                 username = "ppvan",
+                password = "passui123456",
                 avatarUrl = "",
                 fullName = "Phạm Văn Phúc",
                 email = "phuclaplace@gmail.com",

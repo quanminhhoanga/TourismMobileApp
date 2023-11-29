@@ -1,6 +1,8 @@
 package me.ppvan.metour.di
 
 import android.content.Context
+import androidx.room.Room
+import me.ppvan.metour.dao.MeTourDatabase
 import me.ppvan.metour.repository.AuthService
 import me.ppvan.metour.repository.RoomAuthService
 import me.ppvan.metour.repository.RoomTourismRepository
@@ -11,13 +13,19 @@ interface AppModule {
     val authService: AuthService
 }
 
-class AppModuleImpl(private val appContext: Context) : AppModule {
+class AppModuleImpl(appContext: Context) : AppModule {
+
+    private val database = Room.databaseBuilder(
+        appContext,
+        MeTourDatabase::class.java, "metour-db"
+    ).fallbackToDestructiveMigration().build()
+
     override val tourRepo: TourismRepository by lazy {
-        RoomTourismRepository()
+        RoomTourismRepository(database.userDao())
     }
 
     override val authService: AuthService by lazy {
-        RoomAuthService()
+        RoomAuthService(database.userDao())
     }
 }
 

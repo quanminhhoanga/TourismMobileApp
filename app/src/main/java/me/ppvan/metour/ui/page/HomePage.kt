@@ -52,7 +52,7 @@ fun HomePage(viewModel: HomeViewModel, navigateToDetail: (Int) -> Unit) {
         HomeHeader(navigateToAboutMe = {})
         when (viewModel.state.value) {
             HomeStates.Loading -> {
-                Text(text = "Loadding")
+                Text(text = "Loading")
             }
 
             HomeStates.Done -> {

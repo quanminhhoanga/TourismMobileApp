@@ -144,7 +144,7 @@ fun DetailContent(modifier: Modifier, tourism: Tourism) {
                 .align(Alignment.CenterHorizontally)
         )
         Text(
-            text = "About",
+            text = "Giới thiệu",
 //            color = BlackColor500,
 //            fontFamily = poppinsFamily,
             fontWeight = FontWeight.Medium,
@@ -173,7 +173,7 @@ fun DetailBookingNow(
     onClickCard: (Schedule) -> Unit = {}
 ) {
     Text(
-        text = "Booking Now",
+        text = "Đặt ngay:",
 //        color = BlackColor500, fontFamily = poppinsFamily,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
@@ -240,7 +240,7 @@ fun DetailPriceAndContinue(modifier: Modifier, subscribed: Boolean, onClickButto
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary)
             ) {
                 Text(
-                    text = "Hủy Đăng ký",
+                    text = "Hủy đăng ký",
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                 )

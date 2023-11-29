@@ -153,7 +153,7 @@ fun TourCard(tour: Tourism, onClick: (Int) -> Unit) {
                     .aspectRatio(3 / 4f)
                     .clip(RoundedCornerShape(12.dp)),
                 model = tour.picture,
-                placeholder = painterResource(id = R.drawable.hoalo),
+                placeholder = painterResource(id = R.drawable.vhl),
                 contentDescription = null,
                 contentScale = ContentScale.Crop
             )

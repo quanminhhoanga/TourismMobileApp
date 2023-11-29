@@ -24,7 +24,7 @@ data class Tourism(
                 rate = "Default Rate",
                 description = "Default Description",
                 ticketPrice = "Default Ticket Price",
-                picture = R.drawable.hoalo, // Assuming you have a default picture resource
+                picture = R.drawable.vhl, // Assuming you have a default picture resource
                 schedule = emptyList(),
                 isFavorite = false,
                 isSubscribed = false

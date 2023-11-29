@@ -39,7 +39,7 @@ fun DialogScreen(modifier: Modifier, dialogState: Boolean, onDismissRequest: () 
                         modifier = modifier.fillMaxSize(),
                     ) {
                         Text(
-                            text = "Coming Soon..!!",
+                            text = "Coming Soon!",
                             fontSize = 22.sp,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.SemiBold,

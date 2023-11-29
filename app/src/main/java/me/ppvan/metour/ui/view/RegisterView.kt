@@ -118,7 +118,7 @@ fun RegisterView() {
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                CommonText(text = "Đã có tài khoản?,", fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurface) {}
+                CommonText(text = "Đã có tài khoản?", fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurface) {}
                 Spacer(modifier = Modifier.width(4.dp))
                 CommonText(
                     text = "Đăng nhập",

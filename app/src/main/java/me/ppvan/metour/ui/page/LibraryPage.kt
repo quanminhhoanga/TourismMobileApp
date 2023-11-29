@@ -19,7 +19,7 @@ fun LibraryPage(viewModel: LibraryViewModel, navigateToDetails: (Int) -> Unit) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Đã đăng ký ") })
+            TopAppBar(title = { Text(text = "Đã đăng ký") })
         }
     ) { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {

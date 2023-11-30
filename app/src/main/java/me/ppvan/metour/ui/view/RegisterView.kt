@@ -148,7 +148,8 @@ fun RegisterView(
                     placeholder = "Mật khẩu",
                     onValueChange = { password = it },
                     isPasswordTextField = true,
-                    valid = passwordMatch
+                    valid = passwordMatch,
+                    keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 CommonTextField(
@@ -156,7 +157,8 @@ fun RegisterView(
                     placeholder = "Xác nhận mật khẩu",
                     onValueChange = { confirmPassword = it },
                     isPasswordTextField = true,
-                    valid = passwordMatch
+                    valid = passwordMatch,
+                    keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Password),
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
@@ -166,12 +168,12 @@ fun RegisterView(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 val user = User(
-                    fullName = fullName,
-                    phoneNumber = phoneNumber,
+                    fullName = fullName.trim(),
+                    phoneNumber = phoneNumber.trim(),
                     avatarUrl = "",
-                    username = username,
-                    email = email,
-                    password = password,
+                    username = username.trim(),
+                    email = email.trim(),
+                    password = password.trim(),
                     city = "Hà Nội"
                 )
                 onRegisterClick(user)

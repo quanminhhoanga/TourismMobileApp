@@ -1,6 +1,7 @@
 package me.ppvan.metour
 
 import android.app.Application
+import android.util.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import me.ppvan.metour.di.AppModule
@@ -24,6 +25,9 @@ object EventBus {
     val events = _events.asSharedFlow() // publicly exposed as read-only shared flow
 
     suspend fun produceEvent(event: MetourEvent) {
+
+        Log.d("EventBus", event.name)
+
         _events.emit(event) // suspends until all subscribers receive it
     }
 }
@@ -31,4 +35,5 @@ object EventBus {
 enum class MetourEvent {
     FAVORITE_CHANGED,
     SUBSCRIBED_CHANGED,
+    USER_LOGIN,
 }

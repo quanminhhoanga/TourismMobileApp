@@ -107,7 +107,7 @@ fun TourDetailsView(id: Int, onBackPress: () -> Unit) {
     if (dialogVisible) {
         ConfirmAlertDialog(
             onDismissRequest = { dialogVisible = false },
-            onConfirmation = { dialogVisible = false; viewModel.updateSubscribedState() },
+            onConfirmation = { dialogVisible = false; viewModel.updateSubscribedState(id) },
             dialogTitle = "Xác nhận",
             dialogText = "Bạn chắc chắn muốn đăng ký tour?",
             icon = Icons.Filled.Info

@@ -46,9 +46,11 @@ class TourDetailsViewModel constructor(private val repository: TourismRepository
         }
     }
 
-    fun updateSubscribedState() {
+    fun updateSubscribedState(id: Int) {
         subscribed.value = !subscribed.value
         viewModelScope.launch {
+            val result = repository.findTourismById(id)
+            result.isSubscribed = subscribed.value
             EventBus.produceEvent(MetourEvent.SUBSCRIBED_CHANGED)
         }
     }

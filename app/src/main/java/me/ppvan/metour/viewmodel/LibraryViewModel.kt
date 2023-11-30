@@ -27,14 +27,16 @@ class LibraryViewModel constructor(private val tourismRepository: TourismReposit
         loadData()
         viewModelScope.launch {
             EventBus.events.collect { event ->
+                Log.d("LibraryViewModel", "Handle event: ${event.name}")
                 when (event) {
+
                     MetourEvent.FAVORITE_CHANGED, MetourEvent.SUBSCRIBED_CHANGED -> {
                         state.value = LibraryState.Loading
                         loadData()
                     }
 
                     else -> {
-                        Log.d("INFO", "Not handled event: ${event.name}")
+                        Log.d("LibraryViewModel", "Not handled event: ${event.name}")
                     }
                 }
             }
@@ -43,19 +45,15 @@ class LibraryViewModel constructor(private val tourismRepository: TourismReposit
 
     private fun loadData() {
         Log.d("LibraryViewModel", "Load data")
-        if (state.value == LibraryState.Loading) {
-            visibleTours.clear()
+        visibleTours.clear()
+        viewModelScope.launch(Dispatchers.IO) {
+            val matches = tourismRepository.findTourismByPredicate { it.isSubscribed }
 
-            viewModelScope.launch(Dispatchers.IO) {
-                val matches = tourismRepository.findTourismByPredicate { it.isSubscribed }
-
-                withContext(Dispatchers.Main) {
-                    visibleTours.addAll(matches)
-                }
+            withContext(Dispatchers.Main) {
+                visibleTours.addAll(matches)
             }
-
-            state.value = LibraryState.Done
         }
+        state.value = LibraryState.Done
     }
 
     private fun isFavorite(tourism: Tourism) = tourism.isFavorite

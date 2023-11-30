@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.ppvan.metour.data.Tourism
 import me.ppvan.metour.repository.TourismRepository
 
@@ -32,8 +33,14 @@ class HomeViewModel(
             populars.clear()
 
             viewModelScope.launch(Dispatchers.IO) {
-                recommendations.addAll(tourismRepository.findRecommendations())
-                populars.addAll(tourismRepository.findPopulars())
+                val temp1 = tourismRepository.findRecommendations()
+                val temp2 = tourismRepository.findPopulars()
+
+                withContext(Dispatchers.Main) {
+                    recommendations.addAll(temp1)
+                    populars.addAll(temp2)
+                }
+
             }
             state.value = HomeStates.Done
         } else {

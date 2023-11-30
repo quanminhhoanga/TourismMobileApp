@@ -19,7 +19,7 @@ data class User(
         fun default(): User {
             return User(
                 username = "ppvan",
-                password = "passui123456",
+                password = "",
                 avatarUrl = "",
                 fullName = "Phạm Văn Phúc",
                 email = "phuclaplace@gmail.com",

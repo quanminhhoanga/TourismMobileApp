@@ -18,7 +18,7 @@ class AppModuleImpl(appContext: Context) : AppModule {
     private val database = Room.databaseBuilder(
         appContext,
         MeTourDatabase::class.java, "metour-db"
-    ).fallbackToDestructiveMigration().build()
+    ).build()
 
     override val tourRepo: TourismRepository by lazy {
         RoomTourismRepository(database.userDao())

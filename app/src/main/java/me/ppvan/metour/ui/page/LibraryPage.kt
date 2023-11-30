@@ -15,7 +15,7 @@ import me.ppvan.metour.viewmodel.LibraryViewModel
 @Composable
 fun LibraryPage(viewModel: LibraryViewModel, navigateToDetails: (Int) -> Unit) {
 
-    val visibleTours = viewModel.visibleTours.toList()
+    val visibleTours = viewModel.visibleTours
 
     Scaffold(
         topBar = {

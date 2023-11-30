@@ -19,7 +19,12 @@ import me.ppvan.metour.ui.view.HomeView
 import me.ppvan.metour.ui.view.LoginView
 import me.ppvan.metour.ui.view.RegisterView
 import me.ppvan.metour.ui.view.TourDetailsView
+import me.ppvan.metour.viewmodel.HomeViewModel
+import me.ppvan.metour.viewmodel.LibraryViewModel
+import me.ppvan.metour.viewmodel.LoginViewModel
+import me.ppvan.metour.viewmodel.ProfileViewModel
 import me.ppvan.metour.viewmodel.RegisterViewModel
+import me.ppvan.metour.viewmodel.TourViewModel
 import me.ppvan.metour.viewmodel.viewModelFactory
 
 class MainActivity : ComponentActivity() {
@@ -49,10 +54,27 @@ fun MeTourApp() {
     val registerViewModel = viewModel<RegisterViewModel>(factory = viewModelFactory {
         RegisterViewModel(MeTourApplication.appModule.authService)
     })
+    val loginViewModel = viewModel<LoginViewModel>(factory = viewModelFactory {
+        LoginViewModel(MeTourApplication.appModule.authService)
+    })
+    val homeViewModel = viewModel<HomeViewModel>(factory = viewModelFactory {
+        HomeViewModel(MeTourApplication.appModule.tourRepo)
+    })
+    val tourViewModel = viewModel<TourViewModel>(factory = viewModelFactory {
+        TourViewModel(MeTourApplication.appModule.tourRepo)
+    })
+    val libraryViewModel = viewModel<LibraryViewModel>(factory = viewModelFactory {
+        LibraryViewModel(MeTourApplication.appModule.tourRepo)
+    })
+    val profileViewModel = viewModel<ProfileViewModel>(factory = viewModelFactory {
+        ProfileViewModel(MeTourApplication.appModule.authService)
+    })
 
     NavHost(navController = navigator, startDestination = Routes.Register.name) {
         composable(route = Routes.Home.name) {
-            HomeView(navigateToDetails = { id -> navigator.navigate("${Routes.Tour.name}/${id}") })
+            HomeView(
+                homeViewModel, tourViewModel, libraryViewModel, profileViewModel,
+                navigateToDetails = { id -> navigator.navigate("${Routes.Tour.name}/${id}") })
         }
         composable(
             route = "${Routes.Tour.name}/{id}"
@@ -72,15 +94,24 @@ fun MeTourApp() {
             RegisterView(
                 state = registerViewModel.state.value,
                 onRegisterClick = { user ->
-                    registerViewModel.register(user); navigator.navigate(
-                    Routes.Login.name
-                )
+                    registerViewModel.register(user);
+                    navigator.navigate(Routes.Login.name)
                 },
                 onLoginClick = { navigator.navigate(Routes.Login.name) })
         }
 
         composable(route = Routes.Login.name) {
-            LoginView()
+            LoginView(state = loginViewModel.state.value, onLoginClick = { username, password ->
+                loginViewModel.login(username, password) {
+                    navigator.navigate(Routes.Home.name) {
+                        popUpTo(Routes.Register.name) {
+                            inclusive = true
+                        }
+                    }
+                }
+            }) {
+                navigator.navigate(Routes.Register.name)
+            }
         }
 
     }

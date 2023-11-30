@@ -1,6 +1,5 @@
 package me.ppvan.metour.ui.page
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,14 +24,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import me.ppvan.metour.R
 import me.ppvan.metour.data.Tourism
+import me.ppvan.metour.data.User
 import me.ppvan.metour.ui.component.PopularPlaceCard
 import me.ppvan.metour.ui.component.RecommendationCard
 import me.ppvan.metour.ui.theme.MeTourTheme
@@ -41,7 +43,7 @@ import me.ppvan.metour.viewmodel.HomeStates
 import me.ppvan.metour.viewmodel.HomeViewModel
 
 @Composable
-fun HomePage(viewModel: HomeViewModel, navigateToDetail: (Int) -> Unit) {
+fun HomePage(viewModel: HomeViewModel, user: User, navigateToDetail: (Int) -> Unit) {
 
     Column(
         modifier = Modifier
@@ -49,7 +51,7 @@ fun HomePage(viewModel: HomeViewModel, navigateToDetail: (Int) -> Unit) {
             .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(rememberScrollState())
     ) {
-        HomeHeader(navigateToAboutMe = {})
+        HomeHeader(user = user, navigateToAboutMe = {})
         when (viewModel.state.value) {
             HomeStates.Loading -> {
                 Text(text = "Loading")
@@ -115,7 +117,8 @@ fun HomeContent(
 }
 
 @Composable
-fun HomeHeader(modifier: Modifier = Modifier, navigateToAboutMe: () -> Unit) {
+fun HomeHeader(modifier: Modifier = Modifier, user: User, navigateToAboutMe: () -> Unit) {
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -124,7 +127,7 @@ fun HomeHeader(modifier: Modifier = Modifier, navigateToAboutMe: () -> Unit) {
     ) {
         Column {
             Text(
-                text = "Xin chào\nppvan", // TODO load real username
+                text = "Xin chào\n${user.username}",
                 lineHeight = 36.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 24.sp,
@@ -138,8 +141,11 @@ fun HomeHeader(modifier: Modifier = Modifier, navigateToAboutMe: () -> Unit) {
                 fontWeight = FontWeight.Light,
             )
         }
-        Image(
-            painter = painterResource(R.drawable.bocchi),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(user.avatarUrl)
+                .error(R.drawable.default_user)
+                .build(),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .noRippleClickable {

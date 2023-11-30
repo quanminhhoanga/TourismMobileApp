@@ -38,7 +38,12 @@ class TourViewModel(private val tourismRepository: TourismRepository) : ViewMode
         if (state.value == TourPageStates.Idle) {
             results.clear()
             viewModelScope.launch(Dispatchers.IO) {
-                results.addAll(tourismRepository.findPopulars())
+                val temp = tourismRepository.findPopulars()
+
+                withContext(Dispatchers.Main) {
+                    results.addAll(temp)
+                }
+
             }
 
             state.value = TourPageStates.Done

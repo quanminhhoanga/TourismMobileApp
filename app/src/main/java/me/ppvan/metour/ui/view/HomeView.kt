@@ -28,8 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.viewmodel.compose.viewModel
-import me.ppvan.metour.MeTourApplication
 import me.ppvan.metour.ui.page.HomePage
 import me.ppvan.metour.ui.page.LibraryPage
 import me.ppvan.metour.ui.page.ProfilePage
@@ -38,28 +36,22 @@ import me.ppvan.metour.viewmodel.HomeViewModel
 import me.ppvan.metour.viewmodel.LibraryViewModel
 import me.ppvan.metour.viewmodel.ProfileViewModel
 import me.ppvan.metour.viewmodel.TourViewModel
-import me.ppvan.metour.viewmodel.viewModelFactory
 import me.ppvan.moon.utils.SlideTransition
 
 
 @Composable
-fun HomeView(navigateToDetails: (Int) -> Unit) {
+fun HomeView(
+    homeViewModel: HomeViewModel,
+    tourViewModel: TourViewModel,
+    libraryViewModel: LibraryViewModel,
+    profileViewModel: ProfileViewModel,
+
+    navigateToDetails: (Int) -> Unit
+) {
 
     var selectedPage by remember {
         mutableStateOf(TourPages.Home)
     }
-    val homeViewModel = viewModel<HomeViewModel>(factory = viewModelFactory {
-        HomeViewModel(MeTourApplication.appModule.tourRepo)
-    })
-    val tourViewModel = viewModel<TourViewModel>(factory = viewModelFactory {
-        TourViewModel(MeTourApplication.appModule.tourRepo)
-    })
-    val libraryViewModel = viewModel<LibraryViewModel>(factory = viewModelFactory {
-        LibraryViewModel(MeTourApplication.appModule.tourRepo)
-    })
-    val profileViewModel = viewModel<ProfileViewModel>(factory = viewModelFactory {
-        ProfileViewModel(MeTourApplication.appModule.authService)
-    })
 
     Scaffold(
         bottomBar = {
@@ -86,7 +78,12 @@ fun HomeView(navigateToDetails: (Int) -> Unit) {
         )
         { page ->
             when (page) {
-                TourPages.Home -> HomePage(homeViewModel, navigateToDetails)
+                TourPages.Home -> HomePage(
+                    homeViewModel,
+                    profileViewModel.loggedInUser.value,
+                    navigateToDetails
+                )
+
                 TourPages.Tour -> TourPage(tourViewModel, navigateToDetails)
                 TourPages.Profile -> ProfilePage(profileViewModel)
                 TourPages.Library -> LibraryPage(libraryViewModel, navigateToDetails)

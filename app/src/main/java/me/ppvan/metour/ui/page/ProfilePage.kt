@@ -208,10 +208,10 @@ fun ProfileEditPage(
                         .clip(CircleShape),
                     model = ImageRequest.Builder(context)
                         .data(avatarUrl)
-                        .error(R.drawable.bocchi)
+                        .error(R.drawable.default_user)
                         .crossfade(true)
                         .build(),
-                    placeholder = painterResource(R.drawable.bocchi),
+                    placeholder = painterResource(R.drawable.default_user),
                     contentDescription = stringResource(R.string.user_avatar),
                     contentScale = ContentScale.Crop,
                 )
@@ -255,21 +255,21 @@ fun ProfileEditPage(
         ) {
             OutlinedTextField(
                 modifier = formGroup,
-                value = user.fullName,
+                value = fullName,
                 onValueChange = { fullName = it },
                 label = { Text(text = "Họ và tên") },
                 colors = OutlinedTextFieldDefaults.colors()
             )
             OutlinedTextField(
                 modifier = formGroup,
-                value = user.email,
+                value = email,
                 onValueChange = { email = it },
                 label = { Text(text = "Email") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
             OutlinedTextField(
                 modifier = formGroup,
-                value = user.phoneNumber,
+                value = phoneNumber,
                 onValueChange = { phoneNumber = it },
                 label = { Text(text = "Số điện thoại") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
@@ -311,14 +311,14 @@ fun ProfileEditPage(
                 onClick = {
                     val newUser =
                         User(
-                            0L,
-                            user.username,
-                            avatarUrl,
-                            fullName,
-                            email,
-                            phoneNumber,
-                            user.password,
-                            city
+                            userId = 0L,
+                            username = user.username,
+                            avatarUrl = avatarUrl,
+                            fullName = fullName,
+                            email = email,
+                            phoneNumber = phoneNumber,
+                            password = user.password,
+                            city = city
                         )
                     onSubmit(newUser)
                     Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show()
@@ -376,10 +376,10 @@ fun ProfileViewPage(
                             .clip(CircleShape),
                         model = ImageRequest.Builder(context)
                             .data(user.avatarUrl)
-                            .error(R.drawable.bocchi)
+                            .error(R.drawable.default_user)
                             .crossfade(true)
                             .build(),
-                        placeholder = painterResource(R.drawable.bocchi),
+                        placeholder = painterResource(R.drawable.default_user),
                         contentDescription = stringResource(R.string.user_avatar),
                         contentScale = ContentScale.Crop,
                     )
